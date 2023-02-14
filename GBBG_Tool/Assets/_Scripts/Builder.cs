@@ -33,7 +33,7 @@ public class Builder : MonoBehaviour
 			List<Rule> validRules = new List<Rule>();
 			foreach (Rule rule in grammar.rules)
 			{
-				if (rule.predescesor.Symbol == shape.Symbol)
+				if (rule.predescesor == shape.Symbol)
 				{
 					validRules.Add(rule);
 				}
@@ -46,11 +46,12 @@ public class Builder : MonoBehaviour
 				List<Shape> newShapes = selectedRule.ApplyRule(shape);
 				derivation.Remove(shape);
 				shape.gameObject.SetActive(false);
+				Debug.Log(newShapes.Count);
 				if (newShapes.Count > 0)
 				{
 					foreach (Shape newShape in newShapes)
 					{
-						newShape.transform.parent = shape.transform;
+						//newShape.transform.parent = shape.transform;
 						derivation.Add(newShape);
 						Derivate(newShape);
 					}

@@ -6,11 +6,11 @@ using UnityEngine;
 [System.Serializable]
 public class Rule : ScriptableObject 
 {
-    public Shape predescesor;
-    public List<Shape> succesor;
+    public string predescesor;
+    public List<GameObject> succesor;
 
 	public virtual List<Shape> ApplyRule(Shape shape)
 	{
-		return succesor;
+		return null;
 	}
 }

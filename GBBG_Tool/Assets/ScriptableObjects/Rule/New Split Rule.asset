@@ -9,9 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b75dd80a64241704ab27e33249f5fe2e, type: 3}
-  m_Name: Rule1
+  m_Script: {fileID: 11500000, guid: d8755a17022a4c44b8734a1d069c5ee2, type: 3}
+  m_Name: New Split Rule
   m_EditorClassIdentifier: 
-  predescesor: 
+  predescesor: START
   succesor:
-  - {fileID: 11400000, guid: 041d36ae5176c1743b87a5cceb58269f, type: 2}
+  - {fileID: 0}
+  plane: 0
+  cuttingType: 0
+  splitPoints:
+  - 0.5
+  - 0.75
