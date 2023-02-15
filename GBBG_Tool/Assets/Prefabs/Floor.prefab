@@ -130,3 +130,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   symbol: F
   isTerminal: 1
+  dimensions: 3
+  preferedSize: {x: 2, y: 2, z: 1}

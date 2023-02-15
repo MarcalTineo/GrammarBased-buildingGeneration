@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19a3069faa22cbf438081807db90e1be, type: 3}
   m_Name: Grammar
   m_EditorClassIdentifier: 
-  shapesList:
-  - {fileID: 11400000, guid: 2984d2598a4776c41bf0d976dac50899, type: 2}
   rules:
+  - {fileID: 11400000, guid: bf1e46d4ec5c8cd42925e14ddc4958c0, type: 2}
   - {fileID: 11400000, guid: 511cf68ac1053d247976d96de03718c8, type: 2}

@@ -3,13 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable]
-[CreateAssetMenu(fileName = "New Grammar", menuName = "GBBG/Grammar")]
-public class Grammar : ScriptableObject
+namespace GBBG
 {
-    //public Dictionary<string, Shape> shapes;
-    public List<Shape> shapesList;
-    public List<Rule> rules;
+    [Serializable]
+    [CreateAssetMenu(fileName = "New Grammar", menuName = "GBBG/Grammar")]
+    public class Grammar : ScriptableObject
+    {
+        //public Dictionary<string, Shape> shapes;
+        public List<Rule> rules;
 
 
+    }
 }

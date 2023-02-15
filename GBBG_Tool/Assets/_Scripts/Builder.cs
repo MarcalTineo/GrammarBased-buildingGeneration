@@ -1,67 +1,84 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Builder : MonoBehaviour
+
+namespace GBBG
 {
-    public Grammar grammar;
-	
-
-    public List<Shape> derivation;
-
-	private void Start()
+	public class Builder : MonoBehaviour
 	{
-		Build();
-	}
+		public Grammar grammar;
 
-	public void Build()
-    {
+		public GameObject axiom;
+		public List<Shape> derivation;
+		GameObject root;
 
-		Derivate(derivation[0]);
-		
-	}
-
-	private void Derivate(Shape shape)
-	{
-		if (shape.IsTerminal)
+		private void Start()
 		{
-			Debug.Log("Terminal");
+			Build();
 		}
-		else
+
+		public void Build()
 		{
-			//find rules
-			List<Rule> validRules = new List<Rule>();
-			foreach (Rule rule in grammar.rules)
+			Derivate(derivation[0]);
+		}
+		internal void Reset()
+		{
+			if (derivation.Count > 0) 
+				DestroyImmediate(root);
+
+			derivation.Clear();
+			root = Instantiate(axiom, Vector3.zero, Quaternion.identity);
+			root.name = "Start";
+			derivation.Add(root.GetComponent<Shape>());
+		}
+
+
+		private void Derivate(Shape shape)
+		{
+			if (shape.IsTerminal)
 			{
-				if (rule.predescesor == shape.Symbol)
-				{
-					validRules.Add(rule);
-				}
-			}
-			//select rule
-			Rule selectedRule;
-			if (validRules.Count > 0)
-			{
-				selectedRule = validRules[0/*Random.Range(0, validRules.Count - 1)*/];
-				List<Shape> newShapes = selectedRule.ApplyRule(shape);
-				derivation.Remove(shape);
-				shape.gameObject.SetActive(false);
-				Debug.Log(newShapes.Count);
-				if (newShapes.Count > 0)
-				{
-					foreach (Shape newShape in newShapes)
-					{
-						//newShape.transform.parent = shape.transform;
-						derivation.Add(newShape);
-						Derivate(newShape);
-					}
-				}
+				Debug.Log("Terminal");
 			}
 			else
-				Debug.LogError("No rule for non-terminal shape: " + shape.Symbol + ".");
+			{
+				//find rules
+				List<Rule> validRules = new List<Rule>();
+				foreach (Rule rule in grammar.rules)
+				{
+					if (rule.predescesor == shape.Symbol)
+					{
+						validRules.Add(rule);
+					}
+				}
+				//select rule
+				Rule selectedRule;
+				if (validRules.Count > 0)
+				{
+					selectedRule = validRules[0/*Random.Range(0, validRules.Count - 1)*/];
+					List<Shape> newShapes = selectedRule.ApplyRule(shape);
+					derivation.Remove(shape);
+					shape.Deactivate();
+					Debug.Log(newShapes.Count);
+					if (newShapes.Count > 0)
+					{
+						foreach (Shape newShape in newShapes)
+						{
+							derivation.Add(newShape);
+							Derivate(newShape);
+						}
+					}
+				}
+				else
+					Debug.LogError("No rule for non-terminal shape: " + shape.Symbol + ".");
 
+
+			}
 
 		}
-		
+
+
 	}
 }
+
