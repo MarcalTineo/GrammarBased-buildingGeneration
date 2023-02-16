@@ -39,12 +39,13 @@ namespace GBBG
 
 		public Shape CreateNewShape3(GameObject successorShape, Shape predecessor)
 		{
-			Shape newShape = Instantiate(successorShape).GetComponent<Shape>();
-			newShape.gameObject.name = predecessor.Symbol;
+			GameObject newShapeGO = Instantiate(successorShape);
+			Shape newShape = newShapeGO.GetComponent<Shape>();
+			newShape.gameObject.name = newShape.Symbol;
 			newShape.Position = predecessor.Position;
 			newShape.Rotation = predecessor.Rotation;
 			newShape.Scale = predecessor.Scale;
-			newShape.transform.parent = predecessor.transform.parent;
+			newShapeGO.transform.parent = predecessor.transform;
 			return newShape;
 		}
 	}

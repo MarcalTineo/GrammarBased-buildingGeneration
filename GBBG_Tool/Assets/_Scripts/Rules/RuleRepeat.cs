@@ -74,7 +74,7 @@ namespace GBBG
 						for (int i = 0; i < tiles; i++)
 						{
 							Shape newShape = CreateNewShape3(succesor[0], shape);
-							newShape.Position = shape.Position + Vector3.right * tileSize * i;
+							newShape.Position = shape.Position + shape.transform.right * tileSize * i;
 							newShape.Scale = new Vector3(tileSize, shape.Scale.y, Shape.disabledDimension);
 							result.Add(newShape);
 						}
@@ -86,7 +86,7 @@ namespace GBBG
 						for (int i = 0; i < tiles; i++)
 						{
 							Shape newShape = CreateNewShape3(succesor[0], shape);
-							newShape.Position = shape.Position + Vector3.up * tileSize * i;
+							newShape.Position = shape.Position + shape.transform.up * tileSize * i;
 							newShape.Scale = new Vector3(shape.Scale.x, tileSize, Shape.disabledDimension);
 							result.Add(newShape);
 						}
