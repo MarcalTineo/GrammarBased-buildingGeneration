@@ -10,7 +10,7 @@ namespace GBBG
 	public class RuleSplit : Rule
 	{
 		
-		public Plane plane;
+		public Axis plane;
 		public enum CuttingType { Relative, FromRoot, ToRoot }
 		public CuttingType cuttingType;
 		public List<float> splitPoints = new List<float>();
@@ -24,7 +24,7 @@ namespace GBBG
 				float currentPos = 0;
 				switch (plane)
 				{
-					case Plane.X:
+					case Axis.X:
 						switch (cuttingType)
 						{
 							case CuttingType.Relative:
@@ -78,7 +78,7 @@ namespace GBBG
 								break;
 						}
 						break;
-					case Plane.Y:
+					case Axis.Y:
 						switch (cuttingType)
 						{
 							case CuttingType.Relative:
@@ -133,7 +133,7 @@ namespace GBBG
 								break;
 						}
 						break;
-					case Plane.Z:
+					case Axis.Z:
 						switch (cuttingType)
 						{
 							case CuttingType.Relative:

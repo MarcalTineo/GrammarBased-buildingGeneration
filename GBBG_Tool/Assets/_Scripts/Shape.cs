@@ -22,12 +22,22 @@ namespace GBBG
 		[SerializeField] PrimaryShape geometry;
 		[SerializeField] bool isTerminal;
 		[SerializeField] int dimensions;
-		[SerializeField] Vector3 preferedSize;
+		[SerializeField] [Tooltip("0 means infinity")]Vector3 preferedSize;
 
 		//Properties
 		public Vector3 Position { get => transform.position; set => transform.position = value; }
 		public Quaternion Rotation { get => transform.rotation; set => transform.rotation = value; }
-		public Vector3 Scale { get => transform.lossyScale; set => transform.localScale = value; }
+		public Vector3 Scale
+		{
+			get => transform.lossyScale;
+			set
+			{
+				Transform parent = transform.parent;
+				transform.parent = null;
+				transform.localScale = value;
+				transform.parent = parent;
+			}
+		}
 		public string Symbol { get => symbol; }
 		public bool IsTerminal { get => isTerminal; }
 		public int Dimensions { get => dimensions; set => dimensions = value; }
@@ -42,7 +52,7 @@ namespace GBBG
 			gameObject.name = gameObject.name + "_INACTIVE";
 			//transform.localScale = Vector3.one;
 		}
-		
+
 		public void Set2D()
 		{
 			if (dimensions == 3)

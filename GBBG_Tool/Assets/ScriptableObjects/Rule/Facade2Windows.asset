@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62db8f06edb76534fb6bf6d8ee8cc681, type: 3}
+  m_Name: Facade2Windows
+  m_EditorClassIdentifier: 
+  predescesor: FACADE
+  succesor:
+  - {fileID: 3142074239872119730, guid: 4273e1b60a587c044946bd6461d7c73f, type: 3}
+  axis: 0

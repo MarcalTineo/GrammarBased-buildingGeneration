@@ -60,7 +60,6 @@ namespace GBBG
 					List<Shape> newShapes = selectedRule.ApplyRule(shape);
 					derivation.Remove(shape);
 					shape.Deactivate();
-					Debug.Log(newShapes.Count);
 					if (newShapes.Count > 0)
 					{
 						foreach (Shape newShape in newShapes)
