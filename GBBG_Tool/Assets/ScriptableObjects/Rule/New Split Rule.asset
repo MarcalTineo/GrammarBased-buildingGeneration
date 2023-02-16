@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8755a17022a4c44b8734a1d069c5ee2, type: 3}
   m_Name: New Split Rule
   m_EditorClassIdentifier: 
-  predescesor: S
+  predescesor: START
   succesor:
   - {fileID: 3142074239872119730, guid: e35b89d5bf320fc4095b0e947768d232, type: 3}
   - {fileID: 3142074239872119730, guid: e35b89d5bf320fc4095b0e947768d232, type: 3}
   - {fileID: 3142074239872119730, guid: e35b89d5bf320fc4095b0e947768d232, type: 3}
-  plane: 2
+  plane: 1
   cuttingType: 1
   splitPoints:
   - 2

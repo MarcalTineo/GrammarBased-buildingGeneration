@@ -128,7 +128,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eeab3edb6144b541aa015bd6e4f4080, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  symbol: F
-  isTerminal: 1
+  meshes:
+  - {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  - {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  - {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+  symbol: FLOOR
+  geometry: 0
+  isTerminal: 0
   dimensions: 3
   preferedSize: {x: 2, y: 2, z: 1}
