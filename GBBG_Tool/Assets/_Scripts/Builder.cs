@@ -8,6 +8,10 @@ namespace GBBG
 {
 	public class Builder : MonoBehaviour
 	{
+		[Range(1, 100)] public float sizeX;
+		[Range(1, 100)] public float sizeY;
+		[Range(1, 100)] public float sizeZ;
+
 		public Grammar grammar;
 
 		public GameObject axiom;
@@ -25,11 +29,12 @@ namespace GBBG
 		}
 		internal void Reset()
 		{
-			if (derivation.Count > 0) 
+			if (derivation.Count > 0)
 				DestroyImmediate(root);
 
 			derivation.Clear();
 			root = Instantiate(axiom, Vector3.zero, Quaternion.identity);
+			root.transform.localScale = new Vector3(sizeX, sizeY, sizeZ);
 			root.name = "Start";
 			derivation.Add(root.GetComponent<Shape>());
 		}
@@ -39,6 +44,7 @@ namespace GBBG
 		{
 			if (shape.IsTerminal)
 			{
+				shape.Scale = new Vector3(shape.Scale.x, shape.Scale.y, 1);
 				Debug.Log("Terminal");
 			}
 			else
@@ -76,8 +82,6 @@ namespace GBBG
 			}
 
 		}
-
-
 	}
 }
 

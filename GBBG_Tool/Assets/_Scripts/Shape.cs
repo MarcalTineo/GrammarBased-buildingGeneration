@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,7 +23,7 @@ namespace GBBG
 		[SerializeField] PrimaryShape geometry;
 		[SerializeField] bool isTerminal;
 		[SerializeField] int dimensions;
-		[SerializeField] [Tooltip("0 means infinity")]Vector3 preferedSize;
+		[SerializeField][Tooltip("0 means infinity")] Vector3 preferedSize;
 
 		//Properties
 		public Vector3 Position { get => transform.position; set => transform.position = value; }
@@ -72,6 +73,34 @@ namespace GBBG
 				transform.GetChild(0).GetComponent<MeshFilter>().mesh = meshes[(int)PrimaryShape.Cube];
 			}
 		}
+
+		public void RotateRoot(Rule.Axis axis, int rotation)
+		{
+			switch (axis)
+			{
+				case Rule.Axis.X:
+					switch (rotation)
+					{
+						case 90:
+							break;
+						case 180:
+							break;
+						case 270:
+							break;
+						default:
+							break;
+					}
+					break;
+				case Rule.Axis.Y:
+					break;
+				case Rule.Axis.Z:
+					break;
+				default:
+					break;
+			}
+		}
+
+
 
 		//Operators
 

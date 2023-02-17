@@ -14,6 +14,10 @@ namespace GBBG
 		{
 			shape.transform.Translate(translatrion);
 			shape.transform.Rotate(rotation);
+			if(shape.Dimensions == 2 && scale.z != Shape.disabledDimension)
+			{
+				shape.Set3D();
+			}
 			shape.Scale = scale;
 			return new List<Shape> { shape };
 		}

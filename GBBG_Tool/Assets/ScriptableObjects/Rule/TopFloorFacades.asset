@@ -9,10 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62db8f06edb76534fb6bf6d8ee8cc681, type: 3}
-  m_Name: DivideFloors
+  m_Script: {fileID: 11500000, guid: 7935bbc657a0f0d4c843f17c489b2c13, type: 3}
+  m_Name: TopFloorFacades
   m_EditorClassIdentifier: 
-  predescesor: FLOORS
+  predescesor: TFLOOR
   succesor:
-  - {fileID: 3142074239872119730, guid: e35b89d5bf320fc4095b0e947768d232, type: 3}
-  axis: 1
+  - {fileID: 3142074239872119730, guid: 331ca153518b91d42ad1e6487f4fe3da, type: 3}
+  - {fileID: 3142074239872119730, guid: 2dbf0dbb771ee684a85aeef4b567017f, type: 3}
+  splitMode: 2
