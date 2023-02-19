@@ -44,8 +44,8 @@ namespace GBBG
 		{
 			if (shape.IsTerminal)
 			{
-				shape.Scale = new Vector3(shape.Scale.x, shape.Scale.y, 1);
-				Debug.Log("Terminal");
+				//shape.Scale = new Vector3(shape.Scale.x, shape.Scale.y, 1);
+				//Debug.Log("Terminal");
 			}
 			else
 			{

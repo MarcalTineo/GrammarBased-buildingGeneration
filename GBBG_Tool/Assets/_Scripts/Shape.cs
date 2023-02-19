@@ -76,33 +76,85 @@ namespace GBBG
 
 		public void RotateRoot(Rule.Axis axis, int rotation)
 		{
-			switch (axis)
+			if(dimensions == 3)
 			{
-				case Rule.Axis.X:
-					switch (rotation)
-					{
-						case 90:
-							break;
-						case 180:
-							break;
-						case 270:
-							break;
-						default:
-							break;
-					}
-					break;
-				case Rule.Axis.Y:
-					break;
-				case Rule.Axis.Z:
-					break;
-				default:
-					break;
+				switch (axis)
+				{
+					case Rule.Axis.X:
+						switch (rotation)
+						{
+							case 90:
+								Position = Position + transform.up * Scale.y;
+								transform.Rotate(new Vector3(90, 0, 0), Space.Self);
+								Scale = new Vector3(Scale.x, Scale.z, Scale.y);
+								break;
+							case 180:
+								Position = Position + transform.up * Scale.y + transform.forward * Scale.z;
+								transform.Rotate(new Vector3(180, 0, 0), Space.Self);
+								//Scale = new Vector3(Scale.x, Scale.z, Scale.y);
+								break;
+							case 270:
+								Position = Position + transform.forward * Scale.z;
+								transform.Rotate(new Vector3(270, 0, 0), Space.Self);
+								Scale = new Vector3(Scale.x, Scale.z, Scale.y);
+								break;
+							default:
+								break;
+						}
+						break;
+					case Rule.Axis.Y:
+						switch (rotation)
+						{
+							case 90:
+								Position = Position + transform.forward * Scale.z;
+								transform.Rotate(new Vector3(0, 90, 0), Space.Self);
+								Scale = new Vector3(Scale.z, Scale.y, Scale.x);
+								break;
+							case 180:
+								Position = Position + transform.right * Scale.x + transform.forward * Scale.z;
+								transform.Rotate(new Vector3(0, 180, 0), Space.Self);
+								//Scale = new Vector3(Scale.x, Scale.z, Scale.y);
+								break;
+							case 270:
+								Position = Position + transform.right * Scale.x;
+								transform.Rotate(new Vector3(0, 270, 0), Space.Self);
+								Scale = new Vector3(Scale.z, Scale.y, Scale.x);
+								break;
+							default:
+								break;
+						}
+						break;
+					case Rule.Axis.Z:
+						switch (rotation)
+						{
+							case 90:
+								Position = Position + transform.right * Scale.x;
+								transform.Rotate(new Vector3(0, 0, 90), Space.Self);
+								Scale = new Vector3(Scale.y, Scale.x, Scale.z);
+								break;
+							case 180:
+								Position = Position + transform.up * Scale.y + transform.right * Scale.x;
+								transform.Rotate(new Vector3(0, 0, 180), Space.Self);
+								//Scale = new Vector3(Scale.x, Scale.z, Scale.y);
+								break;
+							case 270:
+								Position = Position + transform.up * Scale.y;
+								transform.Rotate(new Vector3(0, 0, 270), Space.Self);
+								Scale = new Vector3(Scale.y, Scale.x, Scale.z);
+								break;
+							default:
+								break;
+						}
+						break;
+					default:
+						break;
+				}
 			}
 		}
 
 
 
 		//Operators
-
+		
 	}
 }
