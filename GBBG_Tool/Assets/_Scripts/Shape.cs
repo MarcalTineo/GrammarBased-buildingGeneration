@@ -50,7 +50,7 @@ namespace GBBG
 		public void Deactivate()
 		{
 			transform.GetChild(0).gameObject.SetActive(false);
-			gameObject.name = gameObject.name + "_INACTIVE";
+			gameObject.name = "#" + gameObject.name;
 			//transform.localScale = Vector3.one;
 		}
 

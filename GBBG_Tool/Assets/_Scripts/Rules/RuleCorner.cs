@@ -27,9 +27,9 @@ namespace GBBG
 			{
 				Shape cornerSuccessor = succesor[0].GetComponent<Shape>();
 				cornerSize = new Vector3(
-					cornerSuccessor.PreferedSize.x >= shape.Scale.x / 2 ? cornerSuccessor.PreferedSize.x : shape.Scale.x / 2,
-					cornerSuccessor.PreferedSize.y >= shape.Scale.y / 2 ? cornerSuccessor.PreferedSize.y : shape.Scale.y / 2,
-					cornerSuccessor.PreferedSize.z >= shape.Scale.z / 2 ? cornerSuccessor.PreferedSize.z : shape.Scale.z / 2);
+					cornerSuccessor.PreferedSize.x <= shape.Scale.x / 2 ? cornerSuccessor.PreferedSize.x : shape.Scale.x / 2,
+					cornerSuccessor.PreferedSize.y <= shape.Scale.y / 2 ? cornerSuccessor.PreferedSize.y : shape.Scale.y / 2,
+					cornerSuccessor.PreferedSize.z <= shape.Scale.z / 2 ? cornerSuccessor.PreferedSize.z : shape.Scale.z / 2);
 			}
 			Shape newShape;
 			Vector2 marginAbs;
@@ -184,7 +184,7 @@ namespace GBBG
 								newShape = CreateNewShape3(succesor[0], shape);
 								Vector2 positionDelta = new Vector2(i == 2 ? 0 : shape.Scale.x - marginAbs.x, j == 2 ? 0 : shape.Scale.y - marginAbs.y);
 								newShape.Position = newShape.Position + shape.transform.right * positionDelta.x + shape.transform.up * positionDelta.y;
-								newShape.Scale = new Vector3(marginAbs.x, marginAbs.y, shape.Scale.x);
+								newShape.Scale = new Vector3(marginAbs.x, marginAbs.y, shape.Scale.z);
 							}
 							else //edges
 							{

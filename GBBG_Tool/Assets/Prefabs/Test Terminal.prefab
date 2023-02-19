@@ -136,4 +136,4 @@ MonoBehaviour:
   geometry: 0
   isTerminal: 1
   dimensions: 3
-  preferedSize: {x: 2, y: 2, z: 2}
+  preferedSize: {x: 3, y: 2, z: 3}
