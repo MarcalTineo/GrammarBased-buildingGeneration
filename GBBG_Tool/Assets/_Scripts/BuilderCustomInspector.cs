@@ -21,5 +21,6 @@ namespace GBBG
 			}
 			DrawDefaultInspector();
 		}
+
 	}
 }

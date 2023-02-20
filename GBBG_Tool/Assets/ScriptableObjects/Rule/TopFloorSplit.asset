@@ -10,16 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d8755a17022a4c44b8734a1d069c5ee2, type: 3}
-  m_Name: New Split Rule
+  m_Name: TopFloorSplit
   m_EditorClassIdentifier: 
   predescesor: START
   succesor:
-  - {fileID: 3142074239872119730, guid: e35b89d5bf320fc4095b0e947768d232, type: 3}
-  - {fileID: 3142074239872119730, guid: e35b89d5bf320fc4095b0e947768d232, type: 3}
-  - {fileID: 3142074239872119730, guid: e35b89d5bf320fc4095b0e947768d232, type: 3}
+  - {fileID: 3142074239872119730, guid: fd291faf9415ebf43b3b15710d8ed0da, type: 3}
+  - {fileID: 3142074239872119730, guid: b9c62aacad03c6f4ca598103f7793f82, type: 3}
   plane: 1
-  cuttingType: 1
+  cuttingType: 2
   splitPoints:
-  - 2
-  - 2
-  - 2
+  - 4.46
+  - 5

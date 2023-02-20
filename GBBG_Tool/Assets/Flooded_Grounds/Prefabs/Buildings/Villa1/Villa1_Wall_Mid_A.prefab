@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 433038}
   - component: {fileID: 3367184}
   - component: {fileID: 2350088}
-  - component: {fileID: 6545254}
   m_Layer: 0
   m_Name: Villa1_Wall_Mid_A
   m_TagString: Untagged
@@ -84,16 +83,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &6545254
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 132996}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 4.0000076, y: 7, z: 0.57421887}
-  m_Center: {x: 2.0000038, y: 3.5, z: -0.008426666}

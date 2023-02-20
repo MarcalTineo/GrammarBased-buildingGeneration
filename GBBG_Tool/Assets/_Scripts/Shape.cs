@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,12 +23,22 @@ namespace GBBG
 		[SerializeField] PrimaryShape geometry;
 		[SerializeField] bool isTerminal;
 		[SerializeField] int dimensions;
-		[SerializeField] Vector3 preferedSize;
+		[SerializeField][Tooltip("0 means infinity")] Vector3 preferedSize;
 
 		//Properties
 		public Vector3 Position { get => transform.position; set => transform.position = value; }
 		public Quaternion Rotation { get => transform.rotation; set => transform.rotation = value; }
-		public Vector3 Scale { get => transform.lossyScale; set => transform.localScale = value; }
+		public Vector3 Scale
+		{
+			get => transform.lossyScale;
+			set
+			{
+				Transform parent = transform.parent;
+				transform.parent = null;
+				transform.localScale = value;
+				transform.parent = parent;
+			}
+		}
 		public string Symbol { get => symbol; }
 		public bool IsTerminal { get => isTerminal; }
 		public int Dimensions { get => dimensions; set => dimensions = value; }
@@ -39,10 +50,10 @@ namespace GBBG
 		public void Deactivate()
 		{
 			transform.GetChild(0).gameObject.SetActive(false);
-			gameObject.name = gameObject.name + "_INACTIVE";
+			gameObject.name = "#" + gameObject.name;
 			//transform.localScale = Vector3.one;
 		}
-		
+
 		public void Set2D()
 		{
 			if (dimensions == 3)
@@ -63,7 +74,87 @@ namespace GBBG
 			}
 		}
 
-		//Operators
+		public void RotateRoot(Rule.Axis axis, int rotation)
+		{
+			if(dimensions == 3)
+			{
+				switch (axis)
+				{
+					case Rule.Axis.X:
+						switch (rotation)
+						{
+							case 90:
+								Position = Position + transform.up * Scale.y;
+								transform.Rotate(new Vector3(90, 0, 0), Space.Self);
+								Scale = new Vector3(Scale.x, Scale.z, Scale.y);
+								break;
+							case 180:
+								Position = Position + transform.up * Scale.y + transform.forward * Scale.z;
+								transform.Rotate(new Vector3(180, 0, 0), Space.Self);
+								//Scale = new Vector3(Scale.x, Scale.z, Scale.y);
+								break;
+							case 270:
+								Position = Position + transform.forward * Scale.z;
+								transform.Rotate(new Vector3(270, 0, 0), Space.Self);
+								Scale = new Vector3(Scale.x, Scale.z, Scale.y);
+								break;
+							default:
+								break;
+						}
+						break;
+					case Rule.Axis.Y:
+						switch (rotation)
+						{
+							case 90:
+								Position = Position + transform.forward * Scale.z;
+								transform.Rotate(new Vector3(0, 90, 0), Space.Self);
+								Scale = new Vector3(Scale.z, Scale.y, Scale.x);
+								break;
+							case 180:
+								Position = Position + transform.right * Scale.x + transform.forward * Scale.z;
+								transform.Rotate(new Vector3(0, 180, 0), Space.Self);
+								//Scale = new Vector3(Scale.x, Scale.z, Scale.y);
+								break;
+							case 270:
+								Position = Position + transform.right * Scale.x;
+								transform.Rotate(new Vector3(0, 270, 0), Space.Self);
+								Scale = new Vector3(Scale.z, Scale.y, Scale.x);
+								break;
+							default:
+								break;
+						}
+						break;
+					case Rule.Axis.Z:
+						switch (rotation)
+						{
+							case 90:
+								Position = Position + transform.right * Scale.x;
+								transform.Rotate(new Vector3(0, 0, 90), Space.Self);
+								Scale = new Vector3(Scale.y, Scale.x, Scale.z);
+								break;
+							case 180:
+								Position = Position + transform.up * Scale.y + transform.right * Scale.x;
+								transform.Rotate(new Vector3(0, 0, 180), Space.Self);
+								//Scale = new Vector3(Scale.x, Scale.z, Scale.y);
+								break;
+							case 270:
+								Position = Position + transform.up * Scale.y;
+								transform.Rotate(new Vector3(0, 0, 270), Space.Self);
+								Scale = new Vector3(Scale.y, Scale.x, Scale.z);
+								break;
+							default:
+								break;
+						}
+						break;
+					default:
+						break;
+				}
+			}
+		}
 
+
+
+		//Operators
+		
 	}
 }
