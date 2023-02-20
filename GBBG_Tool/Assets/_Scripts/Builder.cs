@@ -6,26 +6,39 @@ using UnityEngine;
 
 namespace GBBG
 {
+	[RequireComponent(typeof(PostProduction))]
 	public class Builder : MonoBehaviour
 	{
 		[Range(1, 100)] public float sizeX;
 		[Range(1, 100)] public float sizeY;
 		[Range(1, 100)] public float sizeZ;
 
+		public PostProduction postProduction;
+
 		public Grammar grammar;
 
 		public GameObject axiom;
 		public List<Shape> derivation;
 		GameObject root;
+		float timer = 0;
+		float cooldown = 1;
 
 		private void Start()
 		{
 			Build();
 		}
 
+		private void Update()
+		{
+			timer+=Time.deltaTime;
+		}
+
 		public void Build()
 		{
 			Derivate(derivation[0]);
+
+			//get the final result
+			postProduction.PostProduce(derivation);
 		}
 		internal void Reset()
 		{
@@ -37,6 +50,7 @@ namespace GBBG
 			root.transform.localScale = new Vector3(sizeX, sizeY, sizeZ);
 			root.name = "Start";
 			derivation.Add(root.GetComponent<Shape>());
+			postProduction.Reset();
 		}
 
 
@@ -77,10 +91,8 @@ namespace GBBG
 				}
 				else
 					Debug.LogError("No rule for non-terminal shape: " + shape.Symbol + ".");
-
-
 			}
-
+			
 		}
 	}
 }
