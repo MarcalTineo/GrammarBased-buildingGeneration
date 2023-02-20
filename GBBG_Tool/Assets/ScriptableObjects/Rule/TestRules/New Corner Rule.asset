@@ -17,7 +17,7 @@ MonoBehaviour:
   - {fileID: 3142074239872119730, guid: 6135bfb134ac8964f9eafe08062dbdb4, type: 3}
   - {fileID: 3142074239872119730, guid: 6135bfb134ac8964f9eafe08062dbdb4, type: 3}
   - {fileID: 3142074239872119730, guid: 6135bfb134ac8964f9eafe08062dbdb4, type: 3}
-  axis: 0
+  axis: 1
   margin: 0
   marginType: 0
   includeCenterPiece: 1

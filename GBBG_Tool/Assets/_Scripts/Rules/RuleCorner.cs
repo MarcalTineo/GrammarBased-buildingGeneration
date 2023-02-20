@@ -64,10 +64,16 @@ namespace GBBG
 							if (i == 1 && j == 1) //center
 							{
 								if (includeCenterPiece)
-									result.Add(GetCenterPiece(Axis.X, shape, marginAbs));
+								{
+									Shape centerShape = GetCenterPiece(Axis.X, shape, marginAbs);
+									if (centerShape.Scale.x != 0 && centerShape.Scale.y != 0 && centerShape.Scale.z != 0)
+										result.Add(centerShape);
+									else
+										DestroyImmediate(centerShape.gameObject);
+								}
 								continue;
 							}
-							if (i % 2 == 0 && j % 2 == 0) //corner
+							else if (i % 2 == 0 && j % 2 == 0) //corner
 							{
 								newShape = CreateNewShape3(succesor[0], shape);
 								Vector2 positionDelta = new Vector2(i == 2 ? 0 : shape.Scale.z - marginAbs.x, j == 2 ? 0 : shape.Scale.y - marginAbs.y);
@@ -96,7 +102,11 @@ namespace GBBG
 
 								}
 							}
-							result.Add(newShape);
+							//keep bidimensional shapes outside the derivation
+							if (newShape.Scale.x != 0 && newShape.Scale.y != 0 && newShape.Scale.z != 0)
+								result.Add(newShape);
+							else
+								DestroyImmediate(newShape.gameObject);
 						}
 					}
 					break;
@@ -121,7 +131,13 @@ namespace GBBG
 							if (i == 1 && j == 1) //center
 							{
 								if (includeCenterPiece)
-									result.Add(GetCenterPiece(Axis.Y, shape, marginAbs));
+								{
+									Shape centerShape = GetCenterPiece(Axis.Y, shape, marginAbs);
+									if (centerShape.Scale.x != 0 && centerShape.Scale.y != 0 && centerShape.Scale.z != 0)
+										result.Add(centerShape);
+									else
+										DestroyImmediate(centerShape.gameObject);
+								}
 								continue;
 							}
 							if (i % 2 == 0 && j % 2 == 0) //corner
@@ -151,7 +167,12 @@ namespace GBBG
 										newShape.Position = newShape.Position + shape.transform.forward * marginAbs.y + shape.transform.right * (shape.Scale.x - marginAbs.x);
 								}
 							}
-							result.Add(newShape);
+							//keep bidimensional shapes outside the derivation
+							Debug.Log(newShape.Scale);
+							if (newShape.Scale.x != 0 && newShape.Scale.y != 0 && newShape.Scale.z != 0)
+								result.Add(newShape);
+							else
+								DestroyImmediate(newShape.gameObject);
 						}
 					}
 					break;
@@ -176,7 +197,13 @@ namespace GBBG
 							if (i == 1 && j == 1) //center
 							{
 								if (includeCenterPiece)
-									result.Add(GetCenterPiece(Axis.Z, shape, marginAbs));
+								{
+									Shape centerShape = GetCenterPiece(Axis.Z, shape, marginAbs);
+									if (centerShape.Scale.x != 0 && centerShape.Scale.y != 0 && centerShape.Scale.z != 0)
+										result.Add(centerShape);
+									else
+										DestroyImmediate(centerShape.gameObject);
+								}
 								continue;
 							}
 							if (i % 2 == 0 && j % 2 == 0) //corner
@@ -206,7 +233,11 @@ namespace GBBG
 										newShape.Position = newShape.Position + shape.transform.up * marginAbs.y + shape.transform.right * (shape.Scale.x - marginAbs.x);
 								}
 							}
-							result.Add(newShape);
+							//keep bidimensional shapes outside the derivation
+							if (newShape.Scale.x != 0 && newShape.Scale.y != 0 && newShape.Scale.z != 0)
+								result.Add(newShape);
+							else
+								DestroyImmediate(newShape.gameObject);
 						}
 					}
 					break;
