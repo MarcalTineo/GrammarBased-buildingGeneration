@@ -19,5 +19,5 @@ MonoBehaviour:
   plane: 1
   cuttingType: 2
   splitPoints:
-  - 4.46
+  - 5.5
   - 5

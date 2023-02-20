@@ -92,7 +92,6 @@ namespace GBBG
 				else
 					Debug.LogError("No rule for non-terminal shape: " + shape.Symbol + ".");
 			}
-			
 		}
 	}
 }
