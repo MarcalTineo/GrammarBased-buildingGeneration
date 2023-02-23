@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,15 +10,55 @@ namespace GBBG
 	{
 		[Tooltip("0 = ajust to previous shape, 1 = apply prefered size")]
 		public Vector3Int preferedSize;
+		public bool flip;
+		public Axis axis;
 
 		public override List<Shape> ApplyRule(Shape shape)
 		{
 			Shape newShape = CreateNewShape3(succesor[0], shape);
+			if (flip)
+			{
+				Axis currentTopAxis = GetTopAxis(newShape);
+				
+			}
+
+
 			newShape.Scale = new Vector3(
-				preferedSize.x == 1 ? succesor[0].GetComponent<Shape>().PreferedSize.x : newShape.Scale.x,
-				preferedSize.y == 1 ? succesor[0].GetComponent<Shape>().PreferedSize.y : newShape.Scale.y,
-				preferedSize.z == 1 ? succesor[0].GetComponent<Shape>().PreferedSize.z : newShape.Scale.z);
-			return new List<Shape> { newShape }; 
+				preferedSize.x == 1 ? succesor[0].GetComponent<Shape>().PreferedSize.x : shape.Scale.x,
+				preferedSize.y == 1 ? succesor[0].GetComponent<Shape>().PreferedSize.y : shape.Scale.y,
+				preferedSize.z == 1 ? succesor[0].GetComponent<Shape>().PreferedSize.z : shape.Scale.z);
+			return new List<Shape> { newShape };
+		}
+
+		private Axis GetTopAxis(Shape shape)
+		{
+			float axisX = Vector3.Dot(Vector3.up, shape.transform.right);
+			float axisY = Vector3.Dot(Vector3.up, shape.transform.up);
+			float axisZ = Vector3.Dot(Vector3.up, shape.transform.forward);
+
+			int biggest = 0;
+			if (Mathf.Abs(axisX) < Mathf.Abs(axisY))
+			{
+				if (Mathf.Abs(axisZ) < Mathf.Abs(axisY))
+				{
+					return Axis.Y;
+				}
+				else
+				{
+					return Axis.Z;
+				}
+			}
+			else
+			{
+				if (Mathf.Abs(axisZ) < Mathf.Abs(axisX))
+				{
+					return Axis.X;
+				}
+				else
+				{
+					return Axis.Z;
+				}
+			}
 		}
 	}
 }

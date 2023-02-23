@@ -23,7 +23,7 @@ namespace GBBG
 		[SerializeField] PrimaryShape geometry;
 		[SerializeField] bool isTerminal;
 		[SerializeField] int dimensions;
-		[SerializeField][Tooltip("0 means infinity")] Vector3 preferedSize;
+		[SerializeField] [Tooltip("0 means infinity")] Vector3 preferedSize;
 
 		//Properties
 		public Vector3 Position { get => transform.position; set => transform.position = value; }
@@ -35,48 +35,88 @@ namespace GBBG
 			{
 				Transform parent = transform.parent;
 				transform.parent = null;
-				transform.localScale = value;
+				transform.localScale = value/*Utilities.RoundVector3(value)*/;
 				transform.parent = parent;
 			}
 		}
 		public string Symbol { get => symbol; }
 		public bool IsTerminal { get => isTerminal; }
-		public int Dimensions { get => dimensions; set => dimensions = value; }
+		public int Dimensions { get => dimensions; }
 		public Vector3 PreferedSize { get => preferedSize; set => preferedSize = value; }
 		public PrimaryShape Geometry { get => geometry; set => geometry = value; }
 
-		//Methods
 
+		//Methods
+		/// <summary>
+		/// Deactivates the shape when a rule is applied to it;
+		/// </summary>
 		public void Deactivate()
 		{
 			transform.GetChild(0).gameObject.SetActive(false);
 			gameObject.name = "#" + gameObject.name;
-			//transform.localScale = Vector3.one;
 		}
 
+		/// <summary>
+		/// Sets the shape to 2D. The shape must be 3D to work. The plane is set in the XY axis.
+		/// </summary>
 		public void Set2D()
 		{
-			if (dimensions == 3)
+			if (Dimensions == 3)
 			{
 				dimensions = 2;
 				geometry = PrimaryShape.Quad;
-				transform.GetChild(0).GetComponent<MeshFilter>().mesh = meshes[(int)PrimaryShape.Quad];
+				GameObject renderer = transform.GetChild(0).gameObject;
+				renderer.GetComponent<MeshFilter>().mesh = meshes[(int)PrimaryShape.Quad];
+				renderer.transform.localScale = new Vector3(1, 1, disabledDimension);
+				renderer.transform.localPosition = new Vector3(0.5f, 0.5f, 0);
+			}
+			else
+			{
+				Debug.LogError("Trying to set to 2D a 2D shape.");
 			}
 		}
 
+		/// <summary>
+		/// Sets the shape to 3D. The shape must be 2D for it to work. 
+		/// </summary>
 		public void Set3D()
 		{
-			if (dimensions == 2)
+			
+			if (Dimensions == 2)
 			{
 				dimensions = 3;
 				geometry = PrimaryShape.Cube;
-				transform.GetChild(0).GetComponent<MeshFilter>().mesh = meshes[(int)PrimaryShape.Cube];
+				GameObject renderer = transform.GetChild(0).gameObject;
+				renderer.GetComponent<MeshFilter>().mesh = meshes[(int)PrimaryShape.Cube];
+				renderer.transform.localScale = new Vector3(1, 1, 1);
+				renderer.transform.localPosition = new Vector3(0.5f, 0.5f, 0.5f);
+
+			}
+			else
+			{
+				Debug.LogError("Trying to set to 3D a 3D shape.");
 			}
 		}
 
+		/// <summary>
+		/// Rotates axis arround the root. 
+		/// </summary>
+		public void RotateCorner()
+		{
+			RotateRoot(Rule.Axis.X, 90);
+			RotateRoot(Rule.Axis.Y, 270);
+			RotateRoot(Rule.Axis.Z, 90);
+			RotateRoot(Rule.Axis.X, 270);
+		}
+
+		/// <summary>
+		/// Rotates root arround an axis
+		/// </summary>
+		/// <param name="axis">The axis to apply the rotation</param>
+		/// <param name="rotation">The rotation in degrees (90, 180, 270)</param>
 		public void RotateRoot(Rule.Axis axis, int rotation)
 		{
-			if(dimensions == 3)
+			if (Dimensions == 3)
 			{
 				switch (axis)
 				{
@@ -155,6 +195,17 @@ namespace GBBG
 
 
 		//Operators
-		
+
+		//private void Update()
+		//{
+		//	if (Input.GetKeyDown(KeyCode.D))
+		//	{
+		//		Set2D();
+		//	}
+		//	if (Input.GetKeyDown(KeyCode.E))
+		//	{
+		//		Set3D();
+		//	}
+		//}
 	}
 }

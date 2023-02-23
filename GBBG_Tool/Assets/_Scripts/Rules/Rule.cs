@@ -37,6 +37,12 @@ namespace GBBG
 			return newShape.GetComponent<Shape>();
 		}
 
+		/// <summary>
+		/// Creates a new shape, with transform parameters as predecessor and child of predecessor.
+		/// </summary>
+		/// <param name="successorShape"></param>
+		/// <param name="predecessor"></param>
+		/// <returns>The new Shape</returns>
 		public Shape CreateNewShape3(GameObject successorShape, Shape predecessor)
 		{
 			GameObject newShapeGO = Instantiate(successorShape);

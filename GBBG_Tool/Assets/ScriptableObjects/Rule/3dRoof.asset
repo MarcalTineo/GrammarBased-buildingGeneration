@@ -15,4 +15,6 @@ MonoBehaviour:
   predescesor: ROOF
   succesor:
   - {fileID: 3142074239872119730, guid: 1e96c63d4ad0b4244a4b311fda824d50, type: 3}
-  preferedSize: {x: 0, y: 1, z: 0}
+  preferedSize: {x: 0, y: 0, z: 1}
+  flip: 0
+  axis: 0

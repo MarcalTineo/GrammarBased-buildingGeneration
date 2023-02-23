@@ -20,17 +20,10 @@ namespace GBBG
 		public GameObject axiom;
 		public List<Shape> derivation;
 		GameObject root;
-		float timer = 0;
-		float cooldown = 1;
 
 		private void Start()
 		{
-			Build();
-		}
-
-		private void Update()
-		{
-			timer+=Time.deltaTime;
+			///Build();
 		}
 
 		public void Build()
