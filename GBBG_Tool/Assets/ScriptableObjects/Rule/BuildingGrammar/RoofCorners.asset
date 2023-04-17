@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e20428eadf9abfb4481a6d542a431aff, type: 3}
-  m_Name: New Corner Rule
+  m_Name: RoofCorners
   m_EditorClassIdentifier: 
-  predescesor: START
+  predescesor: ROOF
   succesor:
-  - {fileID: 3142074239872119730, guid: 31191d41dd35c504c9b4fb3bbd228dd4, type: 3}
-  - {fileID: 3142074239872119730, guid: 6135bfb134ac8964f9eafe08062dbdb4, type: 3}
-  - {fileID: 3142074239872119730, guid: 6135bfb134ac8964f9eafe08062dbdb4, type: 3}
+  - {fileID: 3142074239872119730, guid: 0804232908aaee248983b9537291d4b3, type: 3}
+  - {fileID: 3142074239872119730, guid: 63aa59084f8d9934daa53ffdfcf11a93, type: 3}
+  - {fileID: 3142074239872119730, guid: 86ddc9065e2287b43b3035e51ba8cf7a, type: 3}
   axis: 1
-  margin: 0
+  margin: 8
   marginType: 0
   cornerOrientation: 1
   includeCenterPiece: 1

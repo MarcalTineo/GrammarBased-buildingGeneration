@@ -9,12 +9,14 @@ namespace GBBG
 	public class RuleCorner : Rule
 	{
 		//successors 0=corner 1=side 2=center
+		[Header("Succesor index: 0 = corner, 1 = side, 2 = center")]
 		public Axis axis;
 		[Tooltip("0 = prefered size for corners.")]
 		public float margin = 0; //0 means prefered size.
 		public enum MarginType { Absolute, Relative };
 		public MarginType marginType;
-		public enum SplitMode { FacingOut, FacingUp, FacingDown, FacingLeft, FacingRight }
+		public enum CornerOrientation { Default, FacingOut, FacingUp, FacingDown, FacingLeft, FacingRight }
+		public CornerOrientation cornerOrientation;
 		public bool includeCenterPiece;
 
 		public override List<Shape> ApplyRule(Shape shape)
@@ -146,6 +148,34 @@ namespace GBBG
 								Vector2 positionDelta = new Vector2(i == 2 ? 0 : shape.Scale.x - marginAbs.x, j == 2 ? 0 : shape.Scale.z - marginAbs.y);
 								newShape.Position = newShape.Position + shape.transform.right * positionDelta.x + shape.transform.forward * positionDelta.y;
 								newShape.Scale = new Vector3(marginAbs.x, shape.Scale.y, marginAbs.y);
+								Debug.Log(newShape.Scale);
+
+								//corner orientation
+								switch (cornerOrientation)
+								{
+									case CornerOrientation.FacingOut:
+										//identify corner
+										//rotate corner
+										if (i == 0 && j == 2)
+											newShape.RotateRoot(Axis.Y, 90);
+										if (i == 2 && j == 0)
+											newShape.RotateRoot(Axis.Y, 270);
+										if (i == 2 && j == 2)
+											newShape.RotateRoot(Axis.Y, 180);
+
+										break;
+									//case CornerOrientation.FacingUp:
+									//	break;
+									//case CornerOrientation.FacingDown:
+									//	break;
+									//case CornerOrientation.FacingLeft:
+									//	break;
+									//case CornerOrientation.FacingRight:
+										break;
+									default:
+										break;
+								}
+								
 							}
 							else //edges
 							{
@@ -168,7 +198,7 @@ namespace GBBG
 								}
 							}
 							//keep bidimensional shapes outside the derivation
-							Debug.Log(newShape.Scale);
+							
 							if (newShape.Scale.x != 0 && newShape.Scale.y != 0 && newShape.Scale.z != 0)
 								result.Add(newShape);
 							else

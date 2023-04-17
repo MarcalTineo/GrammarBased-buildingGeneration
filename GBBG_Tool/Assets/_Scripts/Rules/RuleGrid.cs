@@ -23,13 +23,12 @@ namespace GBBG
 					{
 						for (int j = 0; j < tiles.y; j++)
 						{
-							Shape newShape = CreateNewShape2(succesor[0], shape.transform);
+							Shape newShape = CreateNewShape3(succesor[0], shape);
 							newShape.Position = new Vector3(
 								shape.Position.x + tileSize.x * i,
 								shape.Position.y + tileSize.y * j,
 								shape.Position.z);
 							newShape.Scale = new Vector3(tileSize.x, tileSize.y, shape.Scale.z);
-							newShape.transform.parent = shape.transform;
 							result.Add(newShape);
 
 						}
@@ -42,13 +41,12 @@ namespace GBBG
 					{
 						for (int j = 0; j < tiles.y; j++)
 						{
-							Shape newShape = CreateNewShape2(succesor[0], shape.transform);
+							Shape newShape = CreateNewShape3(succesor[0], shape);
 							newShape.Position = new Vector3(
 								shape.Position.x + tileSize.x * i,
 								shape.Position.y,
 								shape.Position.z + tileSize.y * j);
 							newShape.Scale = new Vector3(tileSize.x, shape.Scale.y, tileSize.y);
-							newShape.transform.parent = shape.transform;
 							result.Add(newShape);
 						}
 					}
@@ -60,13 +58,12 @@ namespace GBBG
 					{
 						for (int j = 0; j < tiles.y; j++)
 						{
-							Shape newShape = CreateNewShape2(succesor[0], shape.transform);
+							Shape newShape = CreateNewShape3(succesor[0], shape);
 							newShape.Position = new Vector3(
 								shape.Position.x,
 								shape.Position.y + tileSize.y * j,
 								shape.Position.z + tileSize.x * i);
 							newShape.Scale = new Vector3(shape.Scale.x, tileSize.y, tileSize.x);
-							newShape.transform.parent = shape.transform;
 							result.Add(newShape);
 						}
 					}

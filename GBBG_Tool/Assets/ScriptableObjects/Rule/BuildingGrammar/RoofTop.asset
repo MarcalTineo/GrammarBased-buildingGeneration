@@ -9,8 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19a3069faa22cbf438081807db90e1be, type: 3}
-  m_Name: TestCornerRule
+  m_Script: {fileID: 11500000, guid: 7935bbc657a0f0d4c843f17c489b2c13, type: 3}
+  m_Name: RoofTop
   m_EditorClassIdentifier: 
-  rules:
-  - {fileID: 11400000, guid: 3a7167e71c538ad44a27978c0e27735b, type: 2}
+  predescesor: ROOFCENTER
+  succesor:
+  - {fileID: 3142074239872119730, guid: e5f315174747773498d3cfa55146f920, type: 3}
+  splitMode: 3

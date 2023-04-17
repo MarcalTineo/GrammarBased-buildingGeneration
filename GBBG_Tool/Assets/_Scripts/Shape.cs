@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 namespace GBBG
 {
 	//[System.Serializable]
@@ -35,7 +34,7 @@ namespace GBBG
 			{
 				Transform parent = transform.parent;
 				transform.parent = null;
-				transform.localScale = value/*Utilities.RoundVector3(value)*/;
+				transform.localScale = /*Utilities.RoundVector3(value)*/value;
 				transform.parent = parent;
 			}
 		}
@@ -99,7 +98,7 @@ namespace GBBG
 		}
 
 		/// <summary>
-		/// Rotates axis arround the root. 
+		/// Rotates all 3 axis arround the root (diagonal rotation). 
 		/// </summary>
 		public void RotateCorner()
 		{
@@ -110,12 +109,13 @@ namespace GBBG
 		}
 
 		/// <summary>
-		/// Rotates root arround an axis
+		/// Rotates the shape arround an axis, mantaing scale on each axis.
 		/// </summary>
 		/// <param name="axis">The axis to apply the rotation</param>
 		/// <param name="rotation">The rotation in degrees (90, 180, 270)</param>
 		public void RotateRoot(Rule.Axis axis, int rotation)
 		{
+			
 			if (Dimensions == 3)
 			{
 				switch (axis)
@@ -125,17 +125,17 @@ namespace GBBG
 						{
 							case 90:
 								Position = Position + transform.up * Scale.y;
-								transform.Rotate(new Vector3(90, 0, 0), Space.Self);
+								Rotate(new Vector3(90, 0, 0), Space.Self);
 								Scale = new Vector3(Scale.x, Scale.z, Scale.y);
 								break;
 							case 180:
 								Position = Position + transform.up * Scale.y + transform.forward * Scale.z;
-								transform.Rotate(new Vector3(180, 0, 0), Space.Self);
+								Rotate(new Vector3(180, 0, 0), Space.Self);
 								//Scale = new Vector3(Scale.x, Scale.z, Scale.y);
 								break;
 							case 270:
 								Position = Position + transform.forward * Scale.z;
-								transform.Rotate(new Vector3(270, 0, 0), Space.Self);
+								Rotate(new Vector3(270, 0, 0), Space.Self);
 								Scale = new Vector3(Scale.x, Scale.z, Scale.y);
 								break;
 							default:
@@ -143,22 +143,25 @@ namespace GBBG
 						}
 						break;
 					case Rule.Axis.Y:
+						
 						switch (rotation)
 						{
 							case 90:
 								Position = Position + transform.forward * Scale.z;
-								transform.Rotate(new Vector3(0, 90, 0), Space.Self);
+								Rotate(new Vector3(0, 90, 0), Space.Self);
 								Scale = new Vector3(Scale.z, Scale.y, Scale.x);
 								break;
 							case 180:
 								Position = Position + transform.right * Scale.x + transform.forward * Scale.z;
-								transform.Rotate(new Vector3(0, 180, 0), Space.Self);
-								//Scale = new Vector3(Scale.x, Scale.z, Scale.y);
+								Rotate(new Vector3(0, 180, 0), Space.Self);
+								//Scale = new Vector3(Scale.x, Scale.y, Scale.z);
 								break;
 							case 270:
 								Position = Position + transform.right * Scale.x;
-								transform.Rotate(new Vector3(0, 270, 0), Space.Self);
+								Debug.Log(Scale);
+								Rotate(new Vector3(0, 270, 0), Space.Self);
 								Scale = new Vector3(Scale.z, Scale.y, Scale.x);
+
 								break;
 							default:
 								break;
@@ -169,17 +172,17 @@ namespace GBBG
 						{
 							case 90:
 								Position = Position + transform.right * Scale.x;
-								transform.Rotate(new Vector3(0, 0, 90), Space.Self);
+								Rotate(new Vector3(0, 0, 90), Space.Self);
 								Scale = new Vector3(Scale.y, Scale.x, Scale.z);
 								break;
 							case 180:
 								Position = Position + transform.up * Scale.y + transform.right * Scale.x;
-								transform.Rotate(new Vector3(0, 0, 180), Space.Self);
+								Rotate(new Vector3(0, 0, 180), Space.Self);
 								//Scale = new Vector3(Scale.x, Scale.z, Scale.y);
 								break;
 							case 270:
 								Position = Position + transform.up * Scale.y;
-								transform.Rotate(new Vector3(0, 0, 270), Space.Self);
+								Rotate(new Vector3(0, 0, 270), Space.Self);
 								Scale = new Vector3(Scale.y, Scale.x, Scale.z);
 								break;
 							default:
@@ -191,6 +194,20 @@ namespace GBBG
 				}
 			}
 		}
+
+		/// <summary>
+		/// Applies transform.Rotate() in worldSpace.
+		/// </summary>
+		/// <param name="eulerAngle"></param>
+		/// <param name="space"></param>
+		private void Rotate(Vector3 eulerAngle, Space space)
+		{
+			Transform parent = transform.parent;
+			transform.parent = null;
+			transform.Rotate (eulerAngle, space);
+			transform.parent = parent;
+		}
+
 
 
 

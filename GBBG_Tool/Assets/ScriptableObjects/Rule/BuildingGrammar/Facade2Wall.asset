@@ -9,8 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19a3069faa22cbf438081807db90e1be, type: 3}
-  m_Name: TestCornerRule
+  m_Script: {fileID: 11500000, guid: 62db8f06edb76534fb6bf6d8ee8cc681, type: 3}
+  m_Name: Facade2Wall
   m_EditorClassIdentifier: 
-  rules:
-  - {fileID: 11400000, guid: 3a7167e71c538ad44a27978c0e27735b, type: 2}
+  predescesor: FACADE
+  succesor:
+  - {fileID: 3142074239872119730, guid: 2d8b124a7c6092a4b8317c8a6e80e23c, type: 3}
+  axis: 0

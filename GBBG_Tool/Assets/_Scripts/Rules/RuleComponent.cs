@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,7 +6,7 @@ namespace GBBG
 	[CreateAssetMenu(fileName = "New Component Rule", menuName = "GBBG/Rules/Component")]
 	public class RuleComponent : Rule
 	{
-		public enum SplitMode { AllFaces, Sides, SidesPlusTop }
+		public enum SplitMode { AllFaces, Sides, SidesPlusTop, Top, Bottom }
 		public SplitMode splitMode;
 		//succesors 0=side 1=top 2=bottom
 
@@ -17,26 +16,48 @@ namespace GBBG
 			List<Shape> result = new List<Shape>();
 			Shape newShape;
 
-			result = GenerateSideFaces(shape);
+			
 
 			switch (splitMode)
 			{
 				case SplitMode.AllFaces:
+					result = GenerateSideFaces(shape);
 					result.Add(GenerateTop(shape));
-					newShape = CreateNewShape2(succesor[2], shape.transform);
-					newShape.Position = shape.Position + shape.Scale.z * shape.transform.forward;
-					newShape.Rotation = shape.Rotation * Quaternion.AngleAxis(270, shape.transform.right);
-					newShape.Scale = new Vector3(shape.Scale.x, shape.Scale.z, Shape.disabledDimension);
-					newShape.transform.SetParent(shape.transform);
+					result.Add(GenerateBottom(shape));
+					//newShape = CreateNewShape2(succesor[2], shape.transform);
+					//newShape.Position = shape.Position + shape.Scale.z * shape.transform.forward;
+					//newShape.Rotation = shape.Rotation * Quaternion.AngleAxis(270, shape.transform.right);
+					//newShape.Scale = new Vector3(shape.Scale.x, shape.Scale.z, Shape.disabledDimension);
+					//newShape.transform.SetParent(shape.transform);
 					break;
 				case SplitMode.SidesPlusTop:
+					result = GenerateSideFaces(shape);
 					result.Add(GenerateTop(shape));
+					break;
+				case SplitMode.Top:
+					result.Add(GenerateTop(shape));
+					break;
+				case SplitMode.Sides:
+					result = GenerateSideFaces(shape);
+					break;
+				case SplitMode.Bottom:
+					result.Add(GenerateBottom(shape));
 					break;
 				default:
 					break;
 			}
 
 			return result;
+		}
+
+		private Shape GenerateBottom(Shape shape)
+		{
+			Shape newShape = CreateNewShape3(succesor[2], shape);
+			newShape.Position = shape.Position + shape.Scale.z * shape.transform.forward;
+			newShape.Rotation = shape.Rotation * Quaternion.AngleAxis(270, shape.transform.right);
+			newShape.Scale = new Vector3(shape.Scale.x, shape.Scale.z, 1);
+			newShape.Set2D();
+			return newShape;
 		}
 
 		private Shape GenerateTop(Shape shape)

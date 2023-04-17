@@ -46,7 +46,7 @@ namespace GBBG
 			GameObject model = Instantiate(prefab, building.transform);
 			model.transform.position = shape.transform.position;
 			model.transform.rotation = shape.transform.rotation;
-			model.transform.localScale = shape.Scale + Vector3.forward;
+			model.transform.localScale = shape.Scale;
 			shape.Deactivate();
 		}
 

@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 8413665695774628793}
   - component: {fileID: 1437151363055689315}
   m_Layer: 0
-  m_Name: Shape
+  m_Name: Shape 3D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -135,5 +135,5 @@ MonoBehaviour:
   symbol: 
   geometry: 0
   isTerminal: 0
-  dimensions: 0
+  dimensions: 3
   preferedSize: {x: 0, y: 0, z: 0}

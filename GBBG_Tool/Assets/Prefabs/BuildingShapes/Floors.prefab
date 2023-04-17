@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 8413665695774628793}
   - component: {fileID: 1437151363055689315}
   m_Layer: 0
-  m_Name: Floor
+  m_Name: Floors
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -132,8 +132,8 @@ MonoBehaviour:
   - {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
   - {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
   - {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
-  symbol: FLOOR
+  symbol: FLOORS
   geometry: 0
-  isTerminal: 1
+  isTerminal: 0
   dimensions: 3
-  preferedSize: {x: 5, y: 2, z: 3}
+  preferedSize: {x: 0, y: 0, z: 0}

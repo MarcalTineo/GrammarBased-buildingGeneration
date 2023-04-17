@@ -13,7 +13,9 @@ namespace GBBG
 		[Range(1, 100)] public float sizeY;
 		[Range(1, 100)] public float sizeZ;
 
+
 		public PostProduction postProduction;
+		public bool doPostProduction;
 
 		public Grammar grammar;
 
@@ -23,7 +25,7 @@ namespace GBBG
 
 		private void Start()
 		{
-			///Build();
+			//Build();
 		}
 
 		public void Build()
@@ -31,7 +33,10 @@ namespace GBBG
 			Derivate(derivation[0]);
 
 			//get the final result
-			postProduction.PostProduce(derivation);
+			if (doPostProduction)
+			{
+				postProduction.PostProduce(derivation);
+			}
 		}
 		internal void Reset()
 		{
