@@ -17,6 +17,11 @@ namespace GBBG
 			return null;
 		}
 
+		public virtual string GetRuleNotation()
+		{
+			return null;
+		}
+
 		public GameObject CreateNewShape(GameObject newShape, Transform parent)
 		{
 			newShape = Instantiate(newShape);

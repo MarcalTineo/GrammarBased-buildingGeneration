@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -16,9 +16,29 @@ namespace GBBG
 		[Tooltip("Each value is the width of the piece, not the total distance to the root.")]
 		public List<float> splitPoints = new List<float>();
 
+		public override string GetRuleNotation()
+		{
+			string notation = predescesor + " → Split(\"" + plane.ToString() + "\", {";
+			for (int i = 0; i < splitPoints.Count; i++)
+			{
+				notation += splitPoints[i];
+				if (i < splitPoints.Count - 1)
+					notation += ", ";
+			}
+			notation += "}, " + cuttingType.ToString() + ") {";
+			for (int i = 0; i < succesor.Count; i++)
+			{
+				notation += succesor[i].GetComponent<Shape>().Symbol;
+				if (i < succesor.Count - 1)
+					notation += " | ";
+			}
+			notation += "}";
+			return notation;
+		}
 
 		public override List<Shape> ApplyRule(Shape shape)
 		{
+			Debug.Log(GetRuleNotation());
 			if (splitPoints.Count == succesor.Count - 1)
 			{
 				List<Shape> result = new List<Shape>();
