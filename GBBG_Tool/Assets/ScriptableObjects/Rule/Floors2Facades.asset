@@ -14,5 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   predescesor: FLOOR
   succesor:
-  - {fileID: 3142074239872119730, guid: 331ca153518b91d42ad1e6487f4fe3da, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   splitMode: 1
+  axis: 0

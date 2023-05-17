@@ -10,7 +10,7 @@ namespace GBBG
 	public class RuleSplit : Rule
 	{
 
-		public Axis plane;
+		public Axis axis;
 		public enum CuttingType { FromRoot, ToRoot }
 		public CuttingType cuttingType;
 		[Tooltip("Each value is the width of the piece, not the total distance to the root.")]
@@ -18,22 +18,22 @@ namespace GBBG
 
 		public override string GetRuleNotation()
 		{
-			string notation = predescesor + " → Split(\"" + plane.ToString() + "\", {";
+			string notation = predescesor + " → Split(" + axis.ToString() + ", {";
 			for (int i = 0; i < splitPoints.Count; i++)
 			{
 				notation += splitPoints[i];
 				if (i < splitPoints.Count - 1)
 					notation += ", ";
 			}
-			notation += "}, " + cuttingType.ToString() + ") {";
-			for (int i = 0; i < succesor.Count; i++)
-			{
-				notation += succesor[i].GetComponent<Shape>().Symbol;
-				if (i < succesor.Count - 1)
-					notation += " | ";
-			}
-			notation += "}";
+			notation += "}, " + cuttingType.ToString() + ") " + ListSuccessorsForNotation();
 			return notation;
+		}
+
+		public override void Init()
+		{
+			base.Init();
+			succesor.Resize(2, null);
+			splitPoints = new List<float>();
 		}
 
 		public override List<Shape> ApplyRule(Shape shape)
@@ -43,7 +43,7 @@ namespace GBBG
 			{
 				List<Shape> result = new List<Shape>();
 				float currentPos = 0;
-				switch (plane)
+				switch (axis)
 				{
 					case Axis.X:
 						if (cuttingType == CuttingType.FromRoot)

@@ -15,4 +15,6 @@ MonoBehaviour:
   predescesor: FLOOR
   succesor:
   - {fileID: 3142074239872119730, guid: a52a3aa075af00049a77d4cdbc78e17a, type: 3}
+  - {fileID: 3142074239872119730, guid: a52a3aa075af00049a77d4cdbc78e17a, type: 3}
   splitMode: 1
+  axis: 0

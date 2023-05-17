@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   predescesor: START
   succesor:
-  - {fileID: 3142074239872119730, guid: 78e52bc77e720db41beb1116b0d3f02f, type: 3}
-  - {fileID: 3142074239872119730, guid: 22da45e06466f514fbcf77692014f451, type: 3}
-  plane: 1
+  - {fileID: 0}
+  - {fileID: 0}
+  axis: 0
   cuttingType: 1
   splitPoints:
   - 9

@@ -6,15 +6,48 @@ namespace GBBG
 	[CreateAssetMenu(fileName = "New Scope Rule", menuName = "GBBG/Rules/Scope")]
 	public class RuleScope : Rule
 	{
-		public Vector3 translatrion;
+		public enum Mode { Add, Set}
+		public enum Mode2 { Absolute, Relative}
+
+		//translate
+		public bool applyTranslation;
+		public Vector3 translation;
+		public Space translationSpace;
+		public Mode translationMode;
+
+		//rotation
+		public bool applyRotation;
 		public Vector3 rotation;
+		public Space rotationSpace;
+		public Mode rotationMode;
+
+		//scale
+		public bool applyScale;
 		[Tooltip("Set to -1 to not affect the size, set to 0 to bring the shape to 2D")]
 		public Vector3 scale;
+		public Mode scaleMode;
+		public Mode2 scaleAbsolute;
+
+		public override string GetRuleNotation()
+		{
+			string notation = predescesor + " -> Scope( T:" + translation.ToString() + ", R:" + rotation.ToString() + "S:" + scale.ToString() + ")";
+			return notation;
+		}
 
 		public override List<Shape> ApplyRule(Shape shape)
 		{
-			shape.transform.Translate(translatrion);
-			shape.transform.Rotate(rotation);
+			Debug.Log(GetRuleNotation());
+			if (applyTranslation) 
+				ApplyTranslation(shape);
+			if (applyRotation)
+				ApplyRotation(shape);
+			if (applyScale)
+				ApplyScale(shape);
+			return new List<Shape> { shape };
+		}
+
+		private void ApplyScale(Shape shape)
+		{
 			Vector3 newScale = shape.Scale;
 			if (scale.x != -1)
 			{
@@ -70,8 +103,17 @@ namespace GBBG
 				else
 					newScale.z = scale.z;
 			}
-			shape.Scale= newScale;
-			return new List<Shape> { shape };
+			shape.Scale = newScale;
+		}
+
+		private void ApplyRotation(Shape shape)
+		{
+			shape.transform.Rotate(rotation);
+		}
+
+		private void ApplyTranslation(Shape shape)
+		{
+			shape.transform.Translate(translation);
 		}
 	}
 }

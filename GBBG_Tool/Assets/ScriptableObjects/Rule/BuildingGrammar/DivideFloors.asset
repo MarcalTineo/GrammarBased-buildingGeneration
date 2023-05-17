@@ -15,4 +15,4 @@ MonoBehaviour:
   predescesor: FLOORS
   succesor:
   - {fileID: 3142074239872119730, guid: 628063adcaf06064f93213917aad9d67, type: 3}
-  axis: 1
+  axis: 0

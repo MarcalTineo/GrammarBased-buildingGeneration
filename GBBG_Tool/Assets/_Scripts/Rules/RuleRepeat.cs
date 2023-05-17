@@ -10,8 +10,20 @@ namespace GBBG
 		//XYZ for 3d, XY for 2d
 		[Tooltip("Axis perpendicular to the plane division.")] public Axis axis;
 
+		public override string GetRuleNotation()
+		{
+			string notation = predescesor + " -> Repeat(" + axis.ToString() + ") " + ListSuccessorsForNotation();
+			return notation;
+		}
+
+		public override void Init()
+		{
+			base.Init();
+		}
+
 		public override List<Shape> ApplyRule(Shape shape)
 		{
+			Debug.Log(GetRuleNotation());
 			List<Shape> result = new List<Shape>();
 			if (shape.Dimensions == 3)
 			{
@@ -27,7 +39,7 @@ namespace GBBG
 						for (int i = 0; i < tiles; i++)
 						{
 							Shape newShape = CreateNewShape3(succesor[0], shape);
-							newShape.Position = shape.Position + Vector3.right * tileSize * i;
+							newShape.Position = shape.Position + shape.transform.right * tileSize * i;
 							newShape.Scale = new Vector3(tileSize, shape.Scale.y, shape.Scale.z);
 							result.Add(newShape);
 						}
@@ -39,7 +51,7 @@ namespace GBBG
 						for (int i = 0; i < tiles; i++)
 						{
 							Shape newShape = CreateNewShape3(succesor[0], shape);
-							newShape.Position = shape.Position + Vector3.up * tileSize * i;
+							newShape.Position = shape.Position + shape.transform.up * tileSize * i;
 							newShape.Scale = new Vector3(shape.Scale.x, tileSize, shape.Scale.z);
 							result.Add(newShape);
 						}
@@ -51,7 +63,7 @@ namespace GBBG
 						for (int i = 0; i < tiles; i++)
 						{
 							Shape newShape = CreateNewShape3(succesor[0], shape);
-							newShape.Position = shape.Position + Vector3.forward * tileSize * i;
+							newShape.Position = shape.Position + shape.transform.forward * tileSize * i;
 							newShape.Scale = new Vector3(shape.Scale.x, shape.Scale.y, tileSize);
 							result.Add(newShape);
 						}

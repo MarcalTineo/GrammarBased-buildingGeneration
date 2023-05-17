@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Data;
 using UnityEngine;
 
 namespace GBBG
@@ -6,17 +7,29 @@ namespace GBBG
 	[CreateAssetMenu(fileName = "New Component Rule", menuName = "GBBG/Rules/Component")]
 	public class RuleComponent : Rule
 	{
-		public enum SplitMode { AllFaces, Sides, SidesPlusTop, Top, Bottom }
+		public enum SplitMode { AllFaces, Sides, Top, Bottom, SidesPlusTop, SidesPlusBottom, TopPlusBottom }
 		public SplitMode splitMode;
+		public Axis axis;
 		//succesors 0=side 1=top 2=bottom
 
+		public override string GetRuleNotation()
+		{
+			string notation = predescesor + " -> Component(" + axis.ToString() + ", " + splitMode.ToString() + ") " + ListSuccessorsForNotation();
+			return notation;
+		}
+
+		public override void Init()
+		{
+			base.Init();
+			succesor.Resize(3, null);
+		}
 
 		public override List<Shape> ApplyRule(Shape shape)
 		{
+			Debug.Log(GetRuleNotation());
 			List<Shape> result = new List<Shape>();
 			Shape newShape;
 
-			
 
 			switch (splitMode)
 			{

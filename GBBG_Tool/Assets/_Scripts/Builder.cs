@@ -27,6 +27,7 @@ namespace GBBG
 		{
 			//Build();
 		}
+		
 
 		public void Build()
 		{

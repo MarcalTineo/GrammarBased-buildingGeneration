@@ -15,4 +15,7 @@ MonoBehaviour:
   predescesor: ROOFCENTER
   succesor:
   - {fileID: 3142074239872119730, guid: e5f315174747773498d3cfa55146f920, type: 3}
+  - {fileID: 3142074239872119730, guid: e5f315174747773498d3cfa55146f920, type: 3}
+  - {fileID: 3142074239872119730, guid: e5f315174747773498d3cfa55146f920, type: 3}
   splitMode: 3
+  axis: 0

@@ -134,6 +134,6 @@ MonoBehaviour:
   - {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
   symbol: ROOFEDGE
   geometry: 0
-  isTerminal: 1
+  isTerminal: 0
   dimensions: 3
   preferedSize: {x: 0, y: 0, z: 0}

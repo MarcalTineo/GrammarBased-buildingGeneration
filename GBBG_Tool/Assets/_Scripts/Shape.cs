@@ -158,7 +158,6 @@ namespace GBBG
 								break;
 							case 270:
 								Position = Position + transform.right * Scale.x;
-								Debug.Log(Scale);
 								Rotate(new Vector3(0, 270, 0), Space.Self);
 								Scale = new Vector3(Scale.z, Scale.y, Scale.x);
 
@@ -206,6 +205,11 @@ namespace GBBG
 			transform.parent = null;
 			transform.Rotate (eulerAngle, space);
 			transform.parent = parent;
+		}
+
+		public override string ToString()
+		{
+			return symbol;
 		}
 
 

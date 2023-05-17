@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
+using UnityEditor;
 using UnityEngine;
 
 namespace GBBG
@@ -12,15 +14,19 @@ namespace GBBG
 		public string predescesor;
 		public List<GameObject> succesor;
 
-		public virtual List<Shape> ApplyRule(Shape shape)
-		{
-			return null;
-		}
+		public virtual List<Shape> ApplyRule(Shape shape) { return null; }
 
-		public virtual string GetRuleNotation()
+		public virtual string GetRuleNotation() { return null; }
+
+		public virtual void Init() 
 		{
-			return null;
+			succesor = new List<GameObject>
+			{
+				null
+			};
+			EditorUtility.SetDirty(this);
 		}
+		
 
 		public GameObject CreateNewShape(GameObject newShape, Transform parent)
 		{
@@ -58,6 +64,19 @@ namespace GBBG
 			newShape.Scale = predecessor.Scale;
 			newShapeGO.transform.parent = predecessor.transform;
 			return newShape;
+		}
+
+		public string ListSuccessorsForNotation()
+		{
+			string notation = "{";
+			for (int i = 0; i < succesor.Count; i++)
+			{
+				notation += succesor[i].GetComponent<Shape>().ToString();
+				if (i < succesor.Count - 1)
+					notation += " | ";
+			}
+			notation += "}";
+			return notation;
 		}
 	}
 }

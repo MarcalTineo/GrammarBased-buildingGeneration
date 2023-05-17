@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using UnityEngine;
 
 namespace GBBG
@@ -19,8 +20,22 @@ namespace GBBG
 		public CornerOrientation cornerOrientation;
 		public bool includeCenterPiece;
 
+		public override string GetRuleNotation()
+		{
+			string notation = predescesor + " -> Corner(\"" + axis.ToString() + "\", " + margin.ToString() + " , \"" + marginType.ToString();
+			notation += "\", " + cornerOrientation.ToString() + "\", " + includeCenterPiece.ToString() + ") " + ListSuccessorsForNotation();
+			return notation;
+		}
+
+		public override void Init()
+		{
+			base.Init();
+			succesor.Resize(3, null);
+		}
+
 		public override List<Shape> ApplyRule(Shape shape)
 		{
+			Debug.Log(GetRuleNotation());
 			List<Shape> result = new List<Shape>();
 
 			bool marginFromCorners = margin == 0;
@@ -148,7 +163,7 @@ namespace GBBG
 								Vector2 positionDelta = new Vector2(i == 2 ? 0 : shape.Scale.x - marginAbs.x, j == 2 ? 0 : shape.Scale.z - marginAbs.y);
 								newShape.Position = newShape.Position + shape.transform.right * positionDelta.x + shape.transform.forward * positionDelta.y;
 								newShape.Scale = new Vector3(marginAbs.x, shape.Scale.y, marginAbs.y);
-								Debug.Log(newShape.Scale);
+								
 
 								//corner orientation
 								switch (cornerOrientation)
@@ -162,15 +177,6 @@ namespace GBBG
 											newShape.RotateRoot(Axis.Y, 270);
 										if (i == 2 && j == 2)
 											newShape.RotateRoot(Axis.Y, 180);
-
-										break;
-									//case CornerOrientation.FacingUp:
-									//	break;
-									//case CornerOrientation.FacingDown:
-									//	break;
-									//case CornerOrientation.FacingLeft:
-									//	break;
-									//case CornerOrientation.FacingRight:
 										break;
 									default:
 										break;
@@ -195,6 +201,32 @@ namespace GBBG
 										newShape.Position = newShape.Position + shape.transform.forward * marginAbs.y;
 									if (i == 2)
 										newShape.Position = newShape.Position + shape.transform.forward * marginAbs.y + shape.transform.right * (shape.Scale.x - marginAbs.x);
+								}
+
+								//edge orientation
+								switch (cornerOrientation)
+								{
+									case CornerOrientation.Default:
+										break;
+									case CornerOrientation.FacingOut:
+										if (i == 1 && j == 0)
+											newShape.RotateRoot(Axis.Y, 180);
+										if (i == 2 && j == 1)
+											newShape.RotateRoot(Axis.Y, 90);
+										if (i == 0 && j == 1)
+											newShape.RotateRoot(Axis.Y, 270);
+
+										break;
+									case CornerOrientation.FacingUp:
+										break;
+									case CornerOrientation.FacingDown:
+										break;
+									case CornerOrientation.FacingLeft:
+										break;
+									case CornerOrientation.FacingRight:
+										break;
+									default:
+										break;
 								}
 							}
 							//keep bidimensional shapes outside the derivation

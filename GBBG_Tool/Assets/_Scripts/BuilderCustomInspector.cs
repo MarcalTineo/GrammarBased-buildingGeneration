@@ -19,6 +19,11 @@ namespace GBBG
 			{
 				b.Reset();
 			}
+			if (GUILayout.Button("Update"))
+			{
+				b.Reset();
+				b.Build();
+			}
 			DrawDefaultInspector();
 		}
 

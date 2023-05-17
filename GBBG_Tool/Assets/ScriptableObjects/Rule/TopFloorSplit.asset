@@ -15,9 +15,12 @@ MonoBehaviour:
   predescesor: START
   succesor:
   - {fileID: 3142074239872119730, guid: fd291faf9415ebf43b3b15710d8ed0da, type: 3}
-  - {fileID: 3142074239872119730, guid: b9c62aacad03c6f4ca598103f7793f82, type: 3}
-  plane: 1
-  cuttingType: 2
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  axis: 0
+  cuttingType: 1
   splitPoints:
-  - 5.5
-  - 5
+  - 0
+  - 0
+  - 0
