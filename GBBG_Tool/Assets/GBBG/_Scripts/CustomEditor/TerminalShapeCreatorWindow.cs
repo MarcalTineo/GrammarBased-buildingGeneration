@@ -304,7 +304,7 @@ namespace GBBG
 		private void CreateSizeArea()
 		{
 			sizeArea = new GameObject("Size Area (do not destroy)");
-			sizeArea.AddComponent<>();
+			//sizeArea.AddComponent<>();
 		}
 
 		#endregion
