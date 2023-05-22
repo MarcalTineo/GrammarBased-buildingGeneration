@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fc0e3c0dda021f9458708bb6ed66a188, type: 3}
-  m_Name: New Scope Rule1
+  m_Name: New Scope Rule2
   m_EditorClassIdentifier: 
-  predescesor: 
+  predescesor: STAR
   succesor:
   - {fileID: 0}
-  applyTranslation: 1
+  applyTranslation: 0
   translation: {x: 0, y: 0, z: 0}
   translationSpace: 0
-  translationMode: 1
-  applyRotation: 1
+  translationMode: 0
+  applyRotation: 0
   rotation: {x: 0, y: 0, z: 0}
   rotationSpace: 0
   rotationMode: 0

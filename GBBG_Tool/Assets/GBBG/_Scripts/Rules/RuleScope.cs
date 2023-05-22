@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace GBBG
@@ -46,10 +47,75 @@ namespace GBBG
 			return new List<Shape> { shape };
 		}
 
+
+		private void ApplyTranslation(Shape shape)
+		{
+			Transform rootParent = GetRootParent(shape.transform);
+			switch (translationMode)
+			{
+				case Mode.Add:
+					if (translationSpace == Space.Self)
+						shape.transform.Translate(translation, Space.Self);
+					else
+						shape.transform.Translate(translation, rootParent);
+					break;
+				case Mode.Set:
+					shape.transform.position = rootParent.position + rootParent.rotation * translation;
+					break;
+				default:
+					break;
+			}
+		}
+
+		private void ApplyRotation(Shape shape)
+		{
+			Transform rootParent = GetRootParent(shape.transform);
+			switch (rotationMode)
+			{
+				case Mode.Add:
+					if (translationSpace == Space.Self)
+						shape.transform.Rotate(rotation, Space.Self);
+					else
+						shape.transform.rotation *= (rootParent.rotation * Quaternion.Euler(rotation));
+					break;
+				case Mode.Set:
+					shape.transform.rotation = rootParent.rotation * Quaternion.Euler(rotation);
+					break;
+				default:
+					break;
+			}
+		}
+
 		private void ApplyScale(Shape shape)
 		{
-			Vector3 newScale = shape.Scale;
-			if (scale.x != -1)
+			Vector3 newScale;
+			switch (scaleMode)
+			{
+				case Mode.Add:
+					switch (scaleAbsolute)
+					{
+						case Mode2.Absolute:
+							newScale = shape.Scale + scale;
+							break;
+						case Mode2.Relative:
+							newScale = new Vector3(shape.Scale.x * scale.x, shape.Scale.y * scale.y, shape.Scale.z * scale.z);
+							break;
+						default:
+							newScale = scale;
+							Debug.LogError("Scale absolute not set in enum bounds");
+							break;
+					}
+					break;
+				case Mode.Set:
+					newScale = scale;
+					break;
+				default:
+					newScale = scale;
+					Debug.LogError("Scale mode not set in enum bounds");
+					break;
+			}
+
+			if (scale.x != -1 || scaleMode == Mode.Add)
 			{
 				if (scale.x == 0)
 				{
@@ -67,7 +133,7 @@ namespace GBBG
 				else
 					newScale.x = scale.x;
 			}
-			if (scale.y != -1)
+			if (scale.y != -1 || scaleMode == Mode.Add)
 			{
 				if (scale.y == 0)
 				{
@@ -85,7 +151,7 @@ namespace GBBG
 				else
 					newScale.y = scale.y;
 			}
-			if (scale.z != -1)
+			if (scale.z != -1 || scaleMode == Mode.Add)
 			{
 				if (scale.z == 0)
 				{
@@ -106,14 +172,20 @@ namespace GBBG
 			shape.Scale = newScale;
 		}
 
-		private void ApplyRotation(Shape shape)
+		/// <summary>
+		/// Get the top hierarchy Transform.
+		/// </summary>
+		/// <param name="tf"></param>
+		/// <returns>The root parent transform. Null if this transform is the root</returns>
+		private static Transform GetRootParent(Transform tf)
 		{
-			shape.transform.Rotate(rotation);
-		}
-
-		private void ApplyTranslation(Shape shape)
-		{
-			shape.transform.Translate(translation);
+			Transform parent = tf.parent;
+			while (parent != null)
+			{
+				tf = parent; 
+				parent = parent.parent;
+			}
+			return tf;
 		}
 	}
 }

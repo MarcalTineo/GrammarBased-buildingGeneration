@@ -276,7 +276,7 @@ namespace GBBG
 			//predecessor
 			rule.predescesor = EditorGUILayout.TextField(new GUIContent("Predecessor", "The symbol (string) that identifies the predecessor shape."), rule.predescesor);
 			if (!grammar.IsVocabulary(rule.predescesor))
-				EditorGUILayout.LabelField(new GUIContent("Predecessor not found in this grammar.", EditorGUIUtility.FindTexture("console.warnicon")));
+				EditorGUILayout.HelpBox("Predecessor not found in this grammar.", MessageType.Warning);
 
 			//axis
 			rule.axis = (Rule.Axis)EditorGUILayout.EnumPopup(new GUIContent("Axis"), rule.axis);
@@ -342,7 +342,7 @@ namespace GBBG
 			//predecessor
 			rule.predescesor = EditorGUILayout.TextField(new GUIContent("Predecessor", "The symbol (string) that identifies the predecessor shape."), rule.predescesor);
 			if (!grammar.IsVocabulary(rule.predescesor))
-				EditorGUILayout.LabelField(new GUIContent("Predecessor not found in this grammar.", EditorGUIUtility.FindTexture("console.warnicon")));
+				EditorGUILayout.HelpBox("Predecessor not found in this grammar.", MessageType.Warning);
 
 			//axis
 			rule.axis = (Rule.Axis)EditorGUILayout.EnumPopup(new GUIContent("Axis", "Top and Bottom are the planes perpendicular to the axis"), rule.axis);
@@ -452,7 +452,7 @@ namespace GBBG
 			//predecessor
 			rule.predescesor = EditorGUILayout.TextField(new GUIContent("Predecessor", "The symbol (string) that identifies the predecessor shape."), rule.predescesor);
 			if (!grammar.IsVocabulary(rule.predescesor))
-				EditorGUILayout.LabelField(new GUIContent("Predecessor not found in this grammar.", EditorGUIUtility.FindTexture("console.warnicon")));
+				EditorGUILayout.HelpBox("Predecessor not found in this grammar.", MessageType.Warning);
 
 			//successor
 			rule.succesor[0] = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Successor"), rule.succesor[0], typeof(GameObject), false);
@@ -474,7 +474,7 @@ namespace GBBG
 			//predecessor
 			rule.predescesor = EditorGUILayout.TextField(new GUIContent("Predecessor", "The symbol (string) that identifies the predecessor shape."), rule.predescesor);
 			if (!grammar.IsVocabulary(rule.predescesor))
-				EditorGUILayout.LabelField(new GUIContent("Predecessor not found in this grammar.", EditorGUIUtility.FindTexture("console.warnicon")));
+				EditorGUILayout.HelpBox("Predecessor not found in this grammar.", MessageType.Warning);
 
 			//axis
 			rule.axis = (Rule.Axis)EditorGUILayout.EnumPopup(new GUIContent("Axis", "The axis perpendicular to the division planes."), rule.axis);
@@ -507,7 +507,7 @@ namespace GBBG
 			//predecessor
 			rule.predescesor = EditorGUILayout.TextField(new GUIContent("Predecessor", "The symbol (string) that identifies the predecessor shape."), rule.predescesor);
 			if (!grammar.IsVocabulary(rule.predescesor))
-				EditorGUILayout.LabelField(new GUIContent("Predecessor not found in this grammar.", EditorGUIUtility.FindTexture("console.warnicon")));
+				EditorGUILayout.HelpBox("Predecessor not found in this grammar.", MessageType.Warning);
 
 			//succesor
 			rule.succesor[0] = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Successor"), rule.succesor[0], typeof(GameObject), false);
@@ -516,10 +516,12 @@ namespace GBBG
 			rule.applyTranslation = EditorGUILayout.BeginToggleGroup(new GUIContent("Translation"), rule.applyTranslation);
 			//value
 			rule.translation = EditorGUILayout.Vector3Field(new GUIContent("Translation Value"), rule.translation);
-			//world/object space
-			rule.translationSpace = (Space)EditorGUILayout.EnumPopup(new GUIContent("Space"), rule.translationSpace);
 			//add/set
 			rule.translationMode = (RuleScope.Mode)EditorGUILayout.EnumPopup(new GUIContent("Mode"), rule.translationMode);
+			//world/object space
+			EditorGUI.BeginDisabledGroup(rule.translationMode != RuleScope.Mode.Add);
+			rule.translationSpace = (Space)EditorGUILayout.EnumPopup(new GUIContent("Space"), rule.translationSpace);
+			EditorGUI.EndDisabledGroup();
 			EditorGUILayout.EndToggleGroup();
 
 			//rotation
@@ -559,7 +561,7 @@ namespace GBBG
 			//predecessor
 			rule.predescesor = EditorGUILayout.TextField(new GUIContent("Predecessor", "The symbol (string) that identifies the predecessor shape."), rule.predescesor);
 			if (!grammar.IsVocabulary(rule.predescesor))
-				EditorGUILayout.LabelField(new GUIContent("Predecessor not found in this grammar.", EditorGUIUtility.FindTexture("console.warnicon")));
+				EditorGUILayout.HelpBox("Predecessor not found in this grammar.", MessageType.Warning);
 
 			//axis
 			rule.axis = (Rule.Axis)EditorGUILayout.EnumPopup(new GUIContent("Axis", "The axis perpendicular to the division planes."), rule.axis);
