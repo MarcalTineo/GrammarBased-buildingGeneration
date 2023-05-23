@@ -8,8 +8,15 @@ namespace GBBG
 	{
 		private void OnDrawGizmos()
 		{
-			Gizmos.color = Color.red;
+			Gizmos.color = Color.yellow;
 			Gizmos.DrawSphere(transform.position, 0.2f);
+
+			Gizmos.color = Color.red;
+			Gizmos.DrawLine(transform.position, transform.position + transform.right);
+			Gizmos.color = Color.blue;
+			Gizmos.DrawLine(transform.position, transform.position + transform.forward);
+			Gizmos.color = Color.green;
+			Gizmos.DrawLine(transform.position, transform.position + transform.up);
 		}
 	}
 }
