@@ -102,10 +102,10 @@ namespace GBBG
 		/// </summary>
 		public void RotateCorner()
 		{
-			RotateRoot(Rule.Axis.X, 90);
-			RotateRoot(Rule.Axis.Y, 270);
-			RotateRoot(Rule.Axis.Z, 90);
-			RotateRoot(Rule.Axis.X, 270);
+			RotateRoot(Axis.X, 90);
+			RotateRoot(Axis.Y, 270);
+			RotateRoot(Axis.Z, 90);
+			RotateRoot(Axis.X, 270);
 		}
 
 		/// <summary>
@@ -113,14 +113,14 @@ namespace GBBG
 		/// </summary>
 		/// <param name="axis">The axis to apply the rotation</param>
 		/// <param name="rotation">The rotation in degrees (90, 180, 270)</param>
-		public void RotateRoot(Rule.Axis axis, int rotation)
+		public void RotateRoot(Axis axis, int rotation)
 		{
 			
 			if (Dimensions == 3)
 			{
 				switch (axis)
 				{
-					case Rule.Axis.X:
+					case Axis.X:
 						switch (rotation)
 						{
 							case 90:
@@ -142,7 +142,7 @@ namespace GBBG
 								break;
 						}
 						break;
-					case Rule.Axis.Y:
+					case Axis.Y:
 						
 						switch (rotation)
 						{
@@ -166,7 +166,7 @@ namespace GBBG
 								break;
 						}
 						break;
-					case Rule.Axis.Z:
+					case Axis.Z:
 						switch (rotation)
 						{
 							case 90:
@@ -211,22 +211,5 @@ namespace GBBG
 		{
 			return symbol;
 		}
-
-
-
-
-		//Operators
-
-		//private void Update()
-		//{
-		//	if (Input.GetKeyDown(KeyCode.D))
-		//	{
-		//		Set2D();
-		//	}
-		//	if (Input.GetKeyDown(KeyCode.E))
-		//	{
-		//		Set3D();
-		//	}
-		//}
 	}
 }

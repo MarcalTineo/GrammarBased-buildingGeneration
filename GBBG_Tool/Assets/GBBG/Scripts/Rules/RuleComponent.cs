@@ -28,9 +28,7 @@ namespace GBBG
 		{
 			Debug.Log(GetRuleNotation());
 			List<Shape> result = new List<Shape>();
-			Shape newShape;
-
-
+			
 			switch (splitMode)
 			{
 				case SplitMode.AllFaces:

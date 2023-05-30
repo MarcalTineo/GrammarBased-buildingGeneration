@@ -36,7 +36,6 @@ namespace GBBG
 			float axisY = Vector3.Dot(Vector3.up, shape.transform.up);
 			float axisZ = Vector3.Dot(Vector3.up, shape.transform.forward);
 
-			int biggest = 0;
 			if (Mathf.Abs(axisX) < Mathf.Abs(axisY))
 			{
 				if (Mathf.Abs(axisZ) < Mathf.Abs(axisY))

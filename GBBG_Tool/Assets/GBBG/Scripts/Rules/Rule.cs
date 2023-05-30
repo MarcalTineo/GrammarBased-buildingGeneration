@@ -10,7 +10,7 @@ namespace GBBG
 	[System.Serializable]
 	public class Rule : ScriptableObject
 	{
-		public enum Axis { X, Y, Z };
+		//public enum Axis { X, Y, Z };
 		public string predescesor;
 		public List<GameObject> succesor;
 

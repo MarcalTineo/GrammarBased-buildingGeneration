@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace GBBG
 {
-    public class TerminalShapeCreatorWindow : EditorWindow
+    public class TerminalShapeCreator : EditorWindow
     {
         int step;
         int totalSteps = 5;
@@ -20,7 +20,7 @@ namespace GBBG
 		Vector3 sizeAreaScale;
 		public GameObject sizeAreaPrefab;
 
-		string name = "";
+		string terminalShapeName = "";
 		bool shapeCreated;
 
 
@@ -37,7 +37,7 @@ namespace GBBG
         [MenuItem("Window/GBBG/Terminal Shape Creator")]
         public static void ShowWindow()
         {
-            GetWindow(typeof(TerminalShapeCreatorWindow), false, "Terminal Shape Creator");
+            GetWindow(typeof(TerminalShapeCreator), false, "Terminal Shape Creator");
             
         }
 
@@ -53,7 +53,7 @@ namespace GBBG
 			EnterStep0();
 			shapeCreated = false;
 			terminalObject = null;
-			name = "";
+			terminalShapeName = "";
 		}
 
 		private void OnDisable()
@@ -367,7 +367,7 @@ namespace GBBG
 		#region step 4
 		private void Step4()
 		{
-			name = EditorGUILayout.TextField(new GUIContent("Name", "The name of the created shape"), name);
+			terminalShapeName = EditorGUILayout.TextField(new GUIContent("Name", "The name of the created shape"), terminalShapeName);
 		}
 
 
@@ -378,7 +378,7 @@ namespace GBBG
 
 		private void ExitStep4()
 		{
-			if(name == "")
+			if(terminalShapeName == "")
 			{
 				PreviousStep();
 			}
@@ -401,7 +401,7 @@ namespace GBBG
 			EditorGUI.EndDisabledGroup();
 			if (shapeCreated)
 			{
-				DrawInfo($"Please, save the object named <{name} (terminal shape)> created as a perfab to use in the post-production.");
+				DrawInfo($"Please, save the object named <{terminalShapeName} (terminal shape)> created as a perfab to use in the post-production.");
 				if (GUILayout.Button("Create New Shape"))
 				{
 					OnEnable();
@@ -434,7 +434,7 @@ namespace GBBG
 
 		private void CreateShape()
 		{
-			GameObject root = new GameObject($"{name} (terminal shape)");
+			GameObject root = new GameObject($"{terminalShapeName} (terminal shape)");
 			root.transform.position = pivotAreaPosition;
 
 			terminalObject.transform.parent = root.transform;

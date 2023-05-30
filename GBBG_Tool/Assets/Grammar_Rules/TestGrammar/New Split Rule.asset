@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8755a17022a4c44b8734a1d069c5ee2, type: 3}
   m_Name: New Split Rule
   m_EditorClassIdentifier: 
-  predescesor: START
+  predescesor: 
   succesor:
   - {fileID: 0}
   - {fileID: 0}

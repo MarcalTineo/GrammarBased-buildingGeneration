@@ -22,6 +22,24 @@ namespace GBBG
 			float z = Mathf.Round(value.z * 1000) / 1000;
 			return new Vector3(x, y, z);
 		}
+
+		/// <summary>
+		/// Get the top hierarchy Transform.
+		/// </summary>
+		/// <param name="tf"></param>
+		/// <returns>The root parent transform</returns>
+		public static Transform GetRootParent(this Transform tf)
+		{
+			Transform parent = tf.parent;
+			while (parent != null)
+			{
+				tf = parent;
+				parent = parent.parent;
+			}
+			return tf;
+		}
+
+
 	}
 }
 

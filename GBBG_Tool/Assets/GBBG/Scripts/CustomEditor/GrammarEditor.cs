@@ -4,14 +4,18 @@ using UnityEngine;
 using UnityEditor;
 using Unity.VisualScripting;
 using System;
+using System.Data;
+using System.Diagnostics;
 
 namespace GBBG
 {
 	public class GrammarEditor : EditorWindow
 	{
 		public Grammar grammar;
-		public enum RuleType { Scope, Split, Repeat, Grid, Component, Margin}
+		public enum RuleType { Scope, Split, Repeat, Grid, Component, Margin, PostProcess}
 
+		public enum RuleMode { ProductionRules, PostProcessRules}
+		public RuleMode ruleMode = RuleMode.ProductionRules;
 
 		//toolbar
 		const string ruleFolderPath = "Assets/Grammar_Rules/";
@@ -33,6 +37,12 @@ namespace GBBG
 		public static void ShowWindow()
 		{
 			GetWindow(typeof(GrammarEditor), false, "Grammar Editor");
+		}
+
+		private void OnDisable()
+		{
+			EditorUtility.SetDirty(grammar);
+			AssetDatabase.SaveAssetIfDirty(grammar);
 		}
 
 		private void OnGUI()
@@ -62,24 +72,69 @@ namespace GBBG
 		{
 			EditorGUI.BeginDisabledGroup(grammar == null);
 			GUILayout.BeginHorizontal(EditorStyles.toolbar);
-			if (GUILayout.Button("New Rule", GUILayout.Width(position.width / 4)))
+			if (GUILayout.Button("New Rule", GUILayout.Width(position.width / 5)))
 			{
-				NewRuleWindow.ShowWindow(new Vector2(Screen.width / 2, Screen.height / 2), this);
+				if (ruleMode == RuleMode.ProductionRules)
+					NewRuleWindow.ShowWindow(new Vector2(Screen.width / 2, Screen.height / 2), this);
+				else
+					CreatePostProcess();
 			}
-			if (GUILayout.Button("Delete Rule", GUILayout.Width(position.width / 4)))
+			if (GUILayout.Button("Delete Rule", GUILayout.Width(position.width / 5)))
 			{
-				DeleteRuleWindow.ShowWindow(this, new Vector2(Screen.width / 2, Screen.height / 2));
+				if (ruleMode == RuleMode.ProductionRules)
+					DeleteRuleWindow.ShowWindow(this, new Vector2(Screen.width / 2, Screen.height / 2));
+				else
+					DeleteSelectedPostProcess();
 			}
+			if (GUILayout.Button("Duplicate Rule", GUILayout.Width(position.width / 5)))
+			{
+				if (ruleMode == RuleMode.ProductionRules)
+					DuplicateRule(grammar.rules[selectedRuleIndex]);
+				else
+					CreatePostProcess(grammar.postProcesses[selectedRuleIndex]);
+			}
+			ruleMode = (RuleMode)EditorGUILayout.EnumPopup(ruleMode);
+			
 			GUILayout.EndHorizontal();
 			EditorGUI.EndDisabledGroup();
 		}
 
+
+		private void DeleteSelectedPostProcess()
+		{
+			grammar.postProcesses.RemoveAt(selectedRuleIndex);
+		}
+
+		private void CreatePostProcess()
+		{
+			grammar.postProcesses.Add(new PostProcess("New Post-Process"));
+			EditorUtility.SetDirty(grammar);
+			AssetDatabase.SaveAssetIfDirty(grammar);
+		}
+
+		private void CreatePostProcess(PostProcess process)
+		{
+			grammar.postProcesses.Add(new PostProcess(process));
+			EditorUtility.SetDirty(grammar);
+			AssetDatabase.SaveAssetIfDirty(grammar);
+		}
+
 		private void CreateNewRule<T>(string name) where T : Rule
 		{
-			//create so
 			ScriptableObject newRule = ScriptableObject.CreateInstance(typeof(T));
 			newRule.name = name;
 
+			SaveRule(newRule);
+		}
+
+		private void DuplicateRule(Rule rule)
+		{
+			ScriptableObject newRule = Instantiate(rule);
+			SaveRule(newRule);
+		}
+
+		private void SaveRule(ScriptableObject newRule)
+		{
 			//find or create path
 			if (!AssetDatabase.IsValidFolder("Assets/Grammar_Rules"))
 				AssetDatabase.CreateFolder("Assets", "Grammar_Rules");
@@ -92,7 +147,7 @@ namespace GBBG
 				AssetDatabase.CreateAsset(newRule, ruleFolderPath + grammar.name + "/" + newRule.name + ".asset");
 			else
 			{
-				//add an identifier to modyfy the name slightly
+				//add an identifier to modify the name slightly
 				difIndex = 1;
 				while (true)
 				{
@@ -106,11 +161,12 @@ namespace GBBG
 						difIndex++;
 				}
 			}
-			
-			AssetDatabase.SaveAssets();
+
 			((Rule)newRule).Init();
 			grammar.rules.Add((Rule)newRule);
 			selectedRuleIndex = grammar.rules.Count - 1;
+			EditorUtility.SetDirty(grammar);
+			AssetDatabase.SaveAssets();
 		}
 
 		public class NewRuleWindow : EditorWindow
@@ -227,30 +283,33 @@ namespace GBBG
 			GUILayout.Label("Rule Inspector", EditorStyles.boldLabel);
 			GUILayout.Space(5);
 
-			if (grammar.rules.Count > 0)
+			if (ruleMode == RuleMode.ProductionRules)
 			{
+				if (grammar.rules.Count == 0)
+					return;
+
 				Rule rule = grammar.rules[selectedRuleIndex];
 				if (rule.GetType() == typeof(RuleRepeat))
 				{
 					DrawRuleRepeatInspector((RuleRepeat)rule);
 				}
-				if (rule.GetType() == typeof(RuleScope))
+				else if (rule.GetType() == typeof(RuleScope))
 				{
 					DrawRuleScopeInspector((RuleScope)rule);
 				}
-				if (rule.GetType() == typeof(RuleSplit))
+				else if (rule.GetType() == typeof(RuleSplit))
 				{
 					DrawRuleSplitInspector((RuleSplit)rule);
 				}
-				if (rule.GetType() == typeof(RuleGrid))
+				else if (rule.GetType() == typeof(RuleGrid))
 				{
 					DrawRuleGridInspector((RuleGrid)rule);
 				}
-				if (rule.GetType() == typeof(RuleComponent))
+				else if (rule.GetType() == typeof(RuleComponent))
 				{
 					DrawRuleComponentInspector((RuleComponent)rule);
 				}
-				if (rule.GetType() == typeof(RuleCorner))
+				else if (rule.GetType() == typeof(RuleCorner))
 				{
 					DrawRuleCornerInspector((RuleCorner)rule);
 				}
@@ -259,6 +318,32 @@ namespace GBBG
 					EditorUtility.SetDirty(rule);
 				}
 			}
+			else
+			{
+				if (grammar.postProcesses.Count == 0)
+					return;
+
+				PostProcess process = grammar.postProcesses[selectedRuleIndex];
+				DrawPostProcessInspector(process);
+			}
+
+		}
+
+		private void DrawPostProcessInspector(PostProcess process)
+		{
+			EditorGUI.BeginDisabledGroup(true);
+			EditorGUILayout.TextField("Rule Type", "PostProcess");
+			EditorGUI.EndDisabledGroup();
+
+			process.symbol = EditorGUILayout.TextField(new GUIContent("Symbol", "The symbol (string) that identifies the predecessor terminal shape."), process.symbol);
+			if (!grammar.IsVocabulary(process.symbol))
+				EditorGUILayout.HelpBox("Shape not found in this grammar.", MessageType.Warning);
+			else if (!grammar.IsTerminal(process.symbol))
+				EditorGUILayout.HelpBox("Shape is not terminal.", MessageType.Warning);
+
+			process.asset = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Final Asset"), process.asset, typeof(GameObject), false);
+
+
 		}
 
 		private void DrawRuleCornerInspector(RuleCorner rule)
@@ -279,7 +364,7 @@ namespace GBBG
 				EditorGUILayout.HelpBox("Predecessor not found in this grammar.", MessageType.Warning);
 
 			//axis
-			rule.axis = (Rule.Axis)EditorGUILayout.EnumPopup(new GUIContent("Axis"), rule.axis);
+			rule.axis = (Axis)EditorGUILayout.EnumPopup(new GUIContent("Axis"), rule.axis);
 
 			//margin
 			rule.marginType = (RuleCorner.MarginType)EditorGUILayout.EnumPopup(new GUIContent("Margin Type"), rule.marginType);
@@ -345,7 +430,7 @@ namespace GBBG
 				EditorGUILayout.HelpBox("Predecessor not found in this grammar.", MessageType.Warning);
 
 			//axis
-			rule.axis = (Rule.Axis)EditorGUILayout.EnumPopup(new GUIContent("Axis", "Top and Bottom are the planes perpendicular to the axis"), rule.axis);
+			rule.axis = (Axis)EditorGUILayout.EnumPopup(new GUIContent("Axis", "Top and Bottom are the planes perpendicular to the axis"), rule.axis);
 
 			//split mode
 			rule.splitMode = (RuleComponent.SplitMode)EditorGUILayout.EnumPopup(new GUIContent("Split Mode", "Determines which components are the ones to be saved"), rule.splitMode);
@@ -477,7 +562,7 @@ namespace GBBG
 				EditorGUILayout.HelpBox("Predecessor not found in this grammar.", MessageType.Warning);
 
 			//axis
-			rule.axis = (Rule.Axis)EditorGUILayout.EnumPopup(new GUIContent("Axis", "The axis perpendicular to the division planes."), rule.axis);
+			rule.axis = (Axis)EditorGUILayout.EnumPopup(new GUIContent("Axis", "The axis perpendicular to the division planes."), rule.axis);
 
 			//split direction
 			rule.cuttingType = (RuleSplit.CuttingType)EditorGUILayout.EnumPopup(new GUIContent("Cut direction"), rule.cuttingType);
@@ -564,7 +649,7 @@ namespace GBBG
 				EditorGUILayout.HelpBox("Predecessor not found in this grammar.", MessageType.Warning);
 
 			//axis
-			rule.axis = (Rule.Axis)EditorGUILayout.EnumPopup(new GUIContent("Axis", "The axis perpendicular to the division planes."), rule.axis);
+			rule.axis = (Axis)EditorGUILayout.EnumPopup(new GUIContent("Axis", "The axis perpendicular to the division planes."), rule.axis);
 
 			//successor
 			rule.succesor[0] = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Successor"), rule.succesor[0], typeof(GameObject), false);
@@ -575,7 +660,6 @@ namespace GBBG
 		#region RuleSelector
 		private void DrawRuleSelector()
 		{
-			int ruleCount = grammar.rules.Count;
 			GUILayout.BeginHorizontal();
 			GUILayout.Label("Rule Selector", EditorStyles.boldLabel);
 			ruleSelectorFilter = GUILayout.TextField(ruleSelectorFilter, EditorStyles.toolbarSearchField, GUILayout.Width(200));
@@ -583,18 +667,47 @@ namespace GBBG
 			GUILayout.Space(5);
 
 			List<string> ruleNames = new List<string>();
-			for (int i = 0; i < ruleCount; i++)
+			switch (ruleMode)
 			{
-				if (ruleSelectorFilter == "" || grammar.rules[i].name.ToLower().Contains(ruleSelectorFilter.ToLower()))
-					ruleNames.Add(grammar.rules[i].name.Split("#")[0]);
+				case RuleMode.ProductionRules:
+					ruleNames = GetProductionRuleNames();
+					break;
+				case RuleMode.PostProcessRules:
+					ruleNames = GetPostProcessNames();
+					break;
+				default:
+					break;
 			}
-			
 
 			int selectionGridColumns = (int)position.width / 2 / 120;
 			int selectionGridHeight = Mathf.CeilToInt(ruleNames.Count / (float)selectionGridColumns);
 			ruleSelectorScroll = GUILayout.BeginScrollView(ruleSelectorScroll, false, true);
 			selectedRuleIndex = GUILayout.SelectionGrid(selectedRuleIndex, ruleNames.ToArray(), selectionGridColumns, GUILayout.Height(selectionGridHeight * 50), GUILayout.Width(position.width / 2 - 28));
 			GUILayout.EndScrollView();
+		}
+
+		private List<string> GetProductionRuleNames()
+		{
+			List<string> ruleNames = new List<string>();
+			int ruleCount = grammar.rules.Count;
+			for (int i = 0; i < ruleCount; i++)
+			{
+				if (ruleSelectorFilter == "" || grammar.rules[i].name.ToLower().Contains(ruleSelectorFilter.ToLower()))
+					ruleNames.Add(grammar.rules[i].name);
+			}
+			return ruleNames;
+		}
+
+		private List<string> GetPostProcessNames()
+		{
+			List<string> ruleNames = new List<string>();
+			int ruleCount = grammar.postProcesses.Count;
+			for (int i = 0; i < ruleCount; i++)
+			{
+				if (ruleSelectorFilter == "" || grammar.postProcesses[i].symbol.ToLower().Contains(ruleSelectorFilter.ToLower()))
+					ruleNames.Add(grammar.postProcesses[i].symbol);
+			}
+			return ruleNames;
 		}
 
 		#endregion
