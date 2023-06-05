@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8755a17022a4c44b8734a1d069c5ee2, type: 3}
+  m_Name: DivideRoof
+  m_EditorClassIdentifier: 
+  predescesor: START
+  succesor:
+  - {fileID: 3142074239872119730, guid: ce7f79e4e597a5b4abd82db617e3e137, type: 3}
+  - {fileID: 3142074239872119730, guid: 8b9051001150d0f4b89b7ea98a0b70b0, type: 3}
+  axis: 1
+  cuttingType: 1
+  splitPoints:
+  - 7

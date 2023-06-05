@@ -7,16 +7,37 @@ namespace GBBG
 	[CreateAssetMenu(fileName = "New Grid Rule", menuName = "GBBG/Rules/Grid")]
 	public class RuleGrid : Rule
 	{
-		[Tooltip("Axis parallel to the cut")]public Axis axis;
+		public Axis axis;
 		public override List<Shape> ApplyRule(Shape shape)
 		{
 			List<Shape> result = new List<Shape>();
 			Vector2Int tiles;
 			Vector2 tileSize;
+
+			//2d shapes
+			if(shape.Dimensions == 2)
+			{
+				tiles = GetTiles(shape, Axis.X);
+				tileSize = new Vector2(shape.Scale.x / tiles.x, shape.Scale.y / tiles.y);
+				for (int i = 0; i < tiles.x; i++)
+				{
+					for (int j = 0; j < tiles.y; j++)
+					{
+						Shape newShape = CreateNewShape3(succesor[0], shape);
+						newShape.Position += shape.transform.right * tileSize.x * i;
+						newShape.Position += shape.transform.up * tileSize.y * j;
+
+						newShape.Scale = new Vector3(tileSize.x, tileSize.y, shape.Scale.z);
+						result.Add(newShape);
+
+					}
+				}
+			}
+
+			//3d shapes
 			switch (axis)
 			{
-				case Axis.X:
-
+				case Axis.Z:
 					tiles = GetTiles(shape, Axis.X);
 					tileSize = new Vector2(shape.Scale.x / tiles.x, shape.Scale.y / tiles.y);
 					for (int i = 0; i < tiles.x; i++)
@@ -24,10 +45,9 @@ namespace GBBG
 						for (int j = 0; j < tiles.y; j++)
 						{
 							Shape newShape = CreateNewShape3(succesor[0], shape);
-							newShape.Position = new Vector3(
-								shape.Position.x + tileSize.x * i,
-								shape.Position.y + tileSize.y * j,
-								shape.Position.z);
+							newShape.Position += shape.transform.right * tileSize.x * i;
+							newShape.Position += shape.transform.up * tileSize.y * j;
+							
 							newShape.Scale = new Vector3(tileSize.x, tileSize.y, shape.Scale.z);
 							result.Add(newShape);
 
@@ -42,16 +62,15 @@ namespace GBBG
 						for (int j = 0; j < tiles.y; j++)
 						{
 							Shape newShape = CreateNewShape3(succesor[0], shape);
-							newShape.Position = new Vector3(
-								shape.Position.x + tileSize.x * i,
-								shape.Position.y,
-								shape.Position.z + tileSize.y * j);
+							newShape.Position += shape.transform.right * tileSize.x * i;
+							newShape.Position += shape.transform.forward * tileSize.y * j;
+
 							newShape.Scale = new Vector3(tileSize.x, shape.Scale.y, tileSize.y);
 							result.Add(newShape);
 						}
 					}
 					break;
-				case Axis.Z:
+				case Axis.X:
 					tiles = GetTiles(shape, Axis.Z);
 					tileSize = new Vector2(shape.Scale.z / tiles.x, shape.Scale.y / tiles.y);
 					for (int i = 0; i < tiles.x; i++)
@@ -59,10 +78,9 @@ namespace GBBG
 						for (int j = 0; j < tiles.y; j++)
 						{
 							Shape newShape = CreateNewShape3(succesor[0], shape);
-							newShape.Position = new Vector3(
-								shape.Position.x,
-								shape.Position.y + tileSize.y * j,
-								shape.Position.z + tileSize.x * i);
+							newShape.Position += shape.transform.forward * tileSize.x * i;
+							newShape.Position += shape.transform.up * tileSize.y * j;
+
 							newShape.Scale = new Vector3(shape.Scale.x, tileSize.y, tileSize.x);
 							result.Add(newShape);
 						}

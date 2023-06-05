@@ -38,7 +38,7 @@ namespace GBBG
 				transform.parent = parent;
 			}
 		}
-		public string Symbol { get => symbol; }
+		public string Symbol { get => symbol; set => symbol = value; }
 		public bool IsTerminal { get => isTerminal; }
 		public int Dimensions { get => dimensions; }
 		public Vector3 PreferedSize { get => preferedSize; set => preferedSize = value; }

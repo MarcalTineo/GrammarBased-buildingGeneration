@@ -1,52 +1,34 @@
-using System;
-using System.Reflection;
+using GBBG;
 using UnityEditor;
-using UnityEngine;
 
-public class CreateShapeEditor : MonoBehaviour
+public class CreateShapeEditor
 {
-	public static string CurrentProjectFolderPath
-	{
-		get
-		{
-			Type projectWindowUtilType = typeof(ProjectWindowUtil);
-			MethodInfo getActiveFolderPath = projectWindowUtilType.GetMethod("GetActiveFolderPath", BindingFlags.Static | BindingFlags.NonPublic);
-			object obj = getActiveFolderPath.Invoke(null, new object[0]);
-			return obj.ToString();
-		}
-	}
+	
+	const string shape3DAssetPath = "Assets/GBBG/Prefabs/Shape 3D.prefab";
+	const string shape2DAssetPath = "Assets/GBBG/Prefabs/Shape 2D.prefab";
+	const string emptyShapeAssetPath = "Assets/GBBG/Prefabs/Empty.prefab";
+
+	public static string Shape3DAssetPath => shape3DAssetPath;
+	public static string Shape2DAssetPath => shape2DAssetPath;
+	public static string EmptyShapeAssetPath => emptyShapeAssetPath;
 
 	[MenuItem("Assets/Create/GBBG/Shape/3D")]
 	public static void CreateShape3D()
 	{
-		const string assetPath = "Assets/GBBG/Prefabs/Shape 3D.prefab";
-		bool result = AssetDatabase.CopyAsset(assetPath, $"{CurrentProjectFolderPath}/New Shape 3D.prefab");
-		if (!result) 
-		{
-			Debug.LogError("Failed to copy asset to " + CurrentProjectFolderPath + ".");
-		}
+		EditorUtilities.CopyPrefab(shape3DAssetPath, "New Shape 3D", EditorUtilities.CurrentProjectFolderPath);
 	}
 
 	[MenuItem("Assets/Create/GBBG/Shape/2D")]
 	public static void CreateShape2D()
 	{
-		const string assetPath = "Assets/GBBG/Prefabs/Shape 2D.prefab";
-		bool result = AssetDatabase.CopyAsset(assetPath, $"{CurrentProjectFolderPath}/New Shape 2D.prefab");
-		if (!result)
-		{
-			Debug.LogError("Failed to copy asset to " + CurrentProjectFolderPath + ".");
-		}
+		EditorUtilities.CopyPrefab(shape2DAssetPath, "New Shape 2D", EditorUtilities.CurrentProjectFolderPath);
 	}
 
 	[MenuItem("Assets/Create/GBBG/Shape/Empty")]
 	public static void CreateShapeEmpty()
 	{
-		const string assetPath = "Assets/GBBG/Prefabs/Empty.prefab";
-		bool result = AssetDatabase.CopyAsset(assetPath, $"{CurrentProjectFolderPath}/New Empty Shape.prefab");
-		if (!result)
-		{
-			Debug.LogError("Failed to copy asset to " + CurrentProjectFolderPath + ".");
-		}
+		EditorUtilities.CopyPrefab(emptyShapeAssetPath, "New Empty Shape", EditorUtilities.CurrentProjectFolderPath);
+		
 	}
 
 }

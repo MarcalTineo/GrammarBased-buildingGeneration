@@ -38,13 +38,14 @@ namespace GBBG
 		public override List<Shape> ApplyRule(Shape shape)
 		{
 			Debug.Log(GetRuleNotation());
-			if (applyTranslation) 
-				ApplyTranslation(shape);
+			Shape newShape = CreateNewShape3(succesor[0], shape);
+			if (applyTranslation)
+				ApplyTranslation(newShape);
 			if (applyRotation)
-				ApplyRotation(shape);
+				ApplyRotation(newShape);
 			if (applyScale)
-				ApplyScale(shape);
-			return new List<Shape> { shape };
+				ApplyScale(newShape);
+			return new List<Shape> { newShape };
 		}
 
 
@@ -105,9 +106,15 @@ namespace GBBG
 							Debug.LogError("Scale absolute not set in enum bounds");
 							break;
 					}
+
+					newScale.x = Mathf.Max(0, newScale.x);
+					newScale.y = Mathf.Max(0, newScale.y);
+					newScale.z = Mathf.Max(0, newScale.z);
+
 					break;
 				case Mode.Set:
 					newScale = scale;
+
 					break;
 				default:
 					newScale = scale;
@@ -115,61 +122,40 @@ namespace GBBG
 					break;
 			}
 
-			if (scale.x != -1 || scaleMode == Mode.Add)
+			if (newScale.x == 0)
 			{
-				if (scale.x == 0)
-				{
-					newScale.x = Shape.disabledDimension;
-					if (shape.Scale.x != Shape.disabledDimension)
-					{
-						shape.Set2D();
-					}
-				}
-				else if (shape.Scale.x == Shape.disabledDimension)
-				{
-					newScale.x = scale.x;
-					shape.Set3D();
-				}
-				else
-					newScale.x = scale.x;
+				newScale.x = Shape.disabledDimension;
+				if (shape.Scale.x != Shape.disabledDimension)
+					shape.Set2D();
 			}
-			if (scale.y != -1 || scaleMode == Mode.Add)
+			else if (scale.x == -1)
+				newScale.x = shape.Scale.x;
+			else if (shape.Scale.x == Shape.disabledDimension)
+				shape.Set3D();
+
+			if (newScale.y == 0)
 			{
-				if (scale.y == 0)
-				{
-					newScale.y = Shape.disabledDimension;
-					if (shape.Scale.y != Shape.disabledDimension)
-					{
-						shape.Set2D();
-					}
-				}
-				else if (shape.Scale.y == Shape.disabledDimension)
-				{
-					newScale.y = scale.y;
-					shape.Set3D();
-				}
-				else
-					newScale.y = scale.y;
+				newScale.y = Shape.disabledDimension;
+				if (shape.Scale.y != Shape.disabledDimension)
+					shape.Set2D();
 			}
-			if (scale.z != -1 || scaleMode == Mode.Add)
+			else if (scale.y == -1)
+				newScale.y = shape.Scale.y;
+			else if (shape.Scale.y == Shape.disabledDimension)
+				shape.Set3D();
+
+			if (newScale.z == 0)
 			{
-				if (scale.z == 0)
-				{
-					newScale.z = Shape.disabledDimension;
-					if (shape.Scale.z != Shape.disabledDimension)
-					{
-						shape.Set2D();
-					}
-				}
-				else if (shape.Scale.z == Shape.disabledDimension)
-				{
-					newScale.z = scale.z;
-					shape.Set3D();
-				}
-				else
-					newScale.z = scale.z;
+				newScale.z = Shape.disabledDimension;
+				if (shape.Scale.z != Shape.disabledDimension)
+					shape.Set2D();
 			}
-			shape.Scale = newScale;
+			else if (scale.z == -1)
+				newScale.z = shape.Scale.z;
+			else if (shape.Scale.z == Shape.disabledDimension)
+				shape.Set3D();
+
+			shape.Scale = newScale;	
 		}
 
 		/// <summary>

@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19a3069faa22cbf438081807db90e1be, type: 3}
+  m_Name: TestBuilding
+  m_EditorClassIdentifier: 
+  rules:
+  - {fileID: 11400000, guid: 2eef811b8ac6a88429c26c563e843fde, type: 2}
+  - {fileID: 11400000, guid: ba288bd7388fe7346a8593e3188e2cf0, type: 2}
+  - {fileID: 11400000, guid: 110b836f898e622488dd45006473f5b6, type: 2}
+  - {fileID: 11400000, guid: 52c2fb04d4c891c4a91623bab17b9bbe, type: 2}
+  - {fileID: 11400000, guid: 0677c3d483ceb9d44a10f5909522c441, type: 2}
+  - {fileID: 11400000, guid: 1ae68883b9a4bce499f506c33679f61d, type: 2}
+  - {fileID: 11400000, guid: f24c93540fcf5f14badd62e4d9311c51, type: 2}
+  - {fileID: 11400000, guid: 2612b9edb06420b4da8f6db1bd057a7a, type: 2}
+  - {fileID: 11400000, guid: 4c02835c3a27e81408a8308f984a8902, type: 2}
+  - {fileID: 11400000, guid: c5bd1db844d02654cbb9c1cc42638454, type: 2}
+  postProcesses: []

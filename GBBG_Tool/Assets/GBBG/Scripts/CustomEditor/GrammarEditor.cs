@@ -2,10 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using Unity.VisualScripting;
-using System;
-using System.Data;
-using System.Diagnostics;
+using System.IO;
 
 namespace GBBG
 {
@@ -18,7 +15,8 @@ namespace GBBG
 		public RuleMode ruleMode = RuleMode.ProductionRules;
 
 		//toolbar
-		const string ruleFolderPath = "Assets/Grammar_Rules/";
+		const string grammarAssetsFolder = "GBBG_Assets";
+		const string ruleFolderPath = "Assets/GBBG_Assets/";
 		int difIndex = 0;
 
 		//rule selection
@@ -70,28 +68,43 @@ namespace GBBG
 		#region Toolbar
 		private void DrawToolbar()
 		{
+			float buttonWidth = position.width / 6 + 5;
 			EditorGUI.BeginDisabledGroup(grammar == null);
 			GUILayout.BeginHorizontal(EditorStyles.toolbar);
-			if (GUILayout.Button("New Rule", GUILayout.Width(position.width / 5)))
+			if (GUILayout.Button("New Rule", GUILayout.Width(buttonWidth)))
 			{
 				if (ruleMode == RuleMode.ProductionRules)
 					NewRuleWindow.ShowWindow(new Vector2(Screen.width / 2, Screen.height / 2), this);
 				else
 					CreatePostProcess();
 			}
-			if (GUILayout.Button("Delete Rule", GUILayout.Width(position.width / 5)))
+			bool disabled = true;
+			if(grammar != null)
+			{
+				if (ruleMode == RuleMode.ProductionRules)
+					disabled = grammar.rules.Count == 0;
+				else
+					disabled = grammar.postProcesses.Count == 0;
+			}
+			EditorGUI.BeginDisabledGroup (disabled);
+			if (GUILayout.Button("Delete Rule", GUILayout.Width(buttonWidth)))
 			{
 				if (ruleMode == RuleMode.ProductionRules)
 					DeleteRuleWindow.ShowWindow(this, new Vector2(Screen.width / 2, Screen.height / 2));
 				else
 					DeleteSelectedPostProcess();
 			}
-			if (GUILayout.Button("Duplicate Rule", GUILayout.Width(position.width / 5)))
+			EditorGUI.EndDisabledGroup();
+			if (GUILayout.Button("Duplicate Rule", GUILayout.Width(buttonWidth)))
 			{
 				if (ruleMode == RuleMode.ProductionRules)
 					DuplicateRule(grammar.rules[selectedRuleIndex]);
 				else
 					CreatePostProcess(grammar.postProcesses[selectedRuleIndex]);
+			}
+			if(GUILayout.Button("Create Shape", GUILayout.Width(buttonWidth)))
+			{
+				CreateShapeWindow.ShowWindow(new Vector2(Screen.width / 2, Screen.height / 2), this);
 			}
 			ruleMode = (RuleMode)EditorGUILayout.EnumPopup(ruleMode);
 			
@@ -125,6 +138,7 @@ namespace GBBG
 			newRule.name = name;
 
 			SaveRule(newRule);
+			((T)newRule).Init();
 		}
 
 		private void DuplicateRule(Rule rule)
@@ -135,26 +149,22 @@ namespace GBBG
 
 		private void SaveRule(ScriptableObject newRule)
 		{
-			//find or create path
-			if (!AssetDatabase.IsValidFolder("Assets/Grammar_Rules"))
-				AssetDatabase.CreateFolder("Assets", "Grammar_Rules");
-			if (!AssetDatabase.IsValidFolder(ruleFolderPath + grammar.name))
-				AssetDatabase.CreateFolder("Assets/Grammar_Rules", grammar.name);
+			string path = GetRuleSavePath();
 
 			//check for assets with the same name
-			string[] GUIDs = AssetDatabase.FindAssets("t:Rule " + newRule.name, new string[] { ruleFolderPath + grammar.name });
+			string[] GUIDs = AssetDatabase.FindAssets("t:Rule " + newRule.name, new string[] { path });
 			if (GUIDs.Length == 0)
-				AssetDatabase.CreateAsset(newRule, ruleFolderPath + grammar.name + "/" + newRule.name + ".asset");
+				AssetDatabase.CreateAsset(newRule, path + "/" + newRule.name + ".asset");
 			else
 			{
 				//add an identifier to modify the name slightly
 				difIndex = 1;
 				while (true)
 				{
-					GUIDs = AssetDatabase.FindAssets("t:Rule " + newRule.name + difIndex.ToString(), new string[] { ruleFolderPath + grammar.name });
+					GUIDs = AssetDatabase.FindAssets("t:Rule " + newRule.name + difIndex.ToString(), new string[] { path });
 					if (GUIDs.Length == 0)
 					{
-						AssetDatabase.CreateAsset(newRule, ruleFolderPath + grammar.name + "/" + newRule.name + difIndex.ToString() + ".asset");
+						AssetDatabase.CreateAsset(newRule, path + "/" + newRule.name + difIndex.ToString() + ".asset");
 						break;
 					}
 					else
@@ -162,11 +172,40 @@ namespace GBBG
 				}
 			}
 
-			((Rule)newRule).Init();
 			grammar.rules.Add((Rule)newRule);
 			selectedRuleIndex = grammar.rules.Count - 1;
 			EditorUtility.SetDirty(grammar);
 			AssetDatabase.SaveAssets();
+		}
+
+		private string GetRuleSavePath()
+		{
+			//find or create path
+			if (!AssetDatabase.IsValidFolder($"Assets/{grammarAssetsFolder}"))
+				AssetDatabase.CreateFolder("Assets", grammarAssetsFolder);
+			string grammarPath = ruleFolderPath + grammar.name;
+			if (!AssetDatabase.IsValidFolder(grammarPath))
+				AssetDatabase.CreateFolder($"Assets/{grammarAssetsFolder}", grammar.name);
+			string rulePath = grammarPath + "/Rules";
+			if (!AssetDatabase.IsValidFolder(rulePath))
+				AssetDatabase.CreateFolder(grammarPath, "Rules");
+			
+			return rulePath;
+		}
+
+		private string GetShapeSavePath()
+		{
+			//find or create path
+			if (!AssetDatabase.IsValidFolder($"Assets/{grammarAssetsFolder}"))
+				AssetDatabase.CreateFolder("Assets", grammarAssetsFolder);
+			string grammarPath = ruleFolderPath + grammar.name;
+			if (!AssetDatabase.IsValidFolder(grammarPath))
+				AssetDatabase.CreateFolder($"Assets/{grammarAssetsFolder}", grammar.name);
+			string shapePath = grammarPath + "/Shapes";
+			if (!AssetDatabase.IsValidFolder(shapePath))
+				AssetDatabase.CreateFolder(grammarPath, "Shapes");
+
+			return shapePath;
 		}
 
 		public class NewRuleWindow : EditorWindow
@@ -233,8 +272,9 @@ namespace GBBG
 		{
 			ScriptableObject ruleToDelete = grammar.rules[selectedRuleIndex];
 			grammar.rules.RemoveAt(selectedRuleIndex);
-			AssetDatabase.DeleteAsset(ruleFolderPath + grammar.name + "/" + ruleToDelete.name + ".asset");
-			AssetDatabase.SaveAssets();
+			
+			Debug.Log(AssetDatabase.DeleteAsset(AssetDatabase.GetAssetPath(ruleToDelete)));
+			AssetDatabase.Refresh();
 			selectedRuleIndex = Mathf.Clamp(selectedRuleIndex, 0, grammar.rules.Count-1);
 			Repaint();
 		}
@@ -268,6 +308,59 @@ namespace GBBG
 				}
 				GUILayout.EndHorizontal();
 
+			}
+
+			private void OnLostFocus()
+			{
+				Close();
+			}
+		}
+
+		public class CreateShapeWindow : EditorWindow
+		{
+
+			static GrammarEditor grammarEditor;
+			string symbol;
+			public static void ShowWindow(Vector2 position, GrammarEditor _grammarEditor)
+			{
+				grammarEditor = _grammarEditor;
+				CreateShapeWindow window = ScriptableObject.CreateInstance<CreateShapeWindow>();
+				window.position = new Rect(position.x, position.y, 260, 200);
+				window.titleContent = new GUIContent("Select shape to create");
+				window.ShowUtility();
+			}
+
+			private void OnEnable()
+			{
+				symbol = "";
+			}
+
+			private void OnGUI()
+			{
+				symbol = EditorGUILayout.TextField(new GUIContent("Name", "The name and symbol of the shape that will be created"),symbol);
+				Vector2 buttonSize = new Vector2(121, 30);
+				if (GUILayout.Button(new GUIContent("Empty Shape"), GUILayout.Height(buttonSize.y)))
+				{
+					string path = EditorUtilities.CopyPrefab(CreateShapeEditor.EmptyShapeAssetPath, symbol == "" ? "New Empty Shape" : $"{symbol} (Empty)", grammarEditor.GetShapeSavePath());
+					Shape newShape = (Shape)AssetDatabase.LoadAssetAtPath(path, typeof(Shape));
+					newShape.Symbol = symbol;
+					this.Close();
+				}
+				if (GUILayout.Button(new GUIContent("2D Shape"), GUILayout.Height(buttonSize.y)))
+				{
+					string path = EditorUtilities.CopyPrefab(CreateShapeEditor.Shape2DAssetPath, symbol == "" ? "New 2D Shape" : $"{symbol} (2D)", grammarEditor.GetShapeSavePath());
+					Shape newShape = (Shape)AssetDatabase.LoadAssetAtPath(path, typeof(Shape));
+					newShape.Symbol = symbol;
+					this.Close();
+				}
+				if (GUILayout.Button(new GUIContent("3D Shape"), GUILayout.Height(buttonSize.y)))
+				{
+					string path = EditorUtilities.CopyPrefab(CreateShapeEditor.Shape3DAssetPath, symbol == "" ? "New 3D Shape" : $"{symbol} (3D)", grammarEditor.GetShapeSavePath());
+					Shape newShape = (Shape)AssetDatabase.LoadAssetAtPath(path, typeof(Shape));
+					newShape.Symbol = symbol;
+					this.Close();
+				}
+				EditorUtilities.DrawInfo("Shapes are saved in " + grammarEditor.GetShapeSavePath());
 			}
 
 			private void OnLostFocus()
@@ -380,7 +473,7 @@ namespace GBBG
 			rule.includeCenterPiece = EditorGUILayout.Toggle(new GUIContent("Include Center Piece"), rule.includeCenterPiece);
 
 			//successor
-			List<GameObject> succesors = new List<GameObject>(); 
+			List<GameObject> succesors = rule.succesor; 
 			List<GUIContent> labels;
 			if (rule.includeCenterPiece)
 			{
@@ -437,11 +530,15 @@ namespace GBBG
 
 			//successors
 			List<GameObject> succesors = new List<GameObject>();
+			
 			List<GUIContent> labels;
 			switch (rule.splitMode)
 			{
 				case RuleComponent.SplitMode.AllFaces:
 					succesors.Resize(3, null);
+					succesors[0] = rule.succesor[0];
+					succesors[1] = rule.succesor[1];
+					succesors[2] = rule.succesor[2];
 					labels = new List<GUIContent>{
 						new GUIContent("Sides"),
 						new GUIContent("Top"),
@@ -454,6 +551,7 @@ namespace GBBG
 					break;
 				case RuleComponent.SplitMode.Sides:
 					succesors.Resize(1, null);
+					succesors[0] = rule.succesor[0];
 					labels = new List<GUIContent>{
 						new GUIContent("Sides")
 					};
@@ -462,6 +560,8 @@ namespace GBBG
 					break;
 				case RuleComponent.SplitMode.SidesPlusTop:
 					succesors.Resize(2, null);
+					succesors[0] = rule.succesor[0];
+					succesors[1] = rule.succesor[1];
 					labels = new List<GUIContent>{
 						new GUIContent("Sides"),
 						new GUIContent("Top")
@@ -472,6 +572,7 @@ namespace GBBG
 					break;
 				case RuleComponent.SplitMode.Top:
 					succesors.Resize(1, null);
+					succesors[0] = rule.succesor[1];
 					labels = new List<GUIContent>{
 						new GUIContent("Top"),
 					};
@@ -480,6 +581,7 @@ namespace GBBG
 					break;
 				case RuleComponent.SplitMode.Bottom:
 					succesors.Resize(1, null);
+					succesors[0] = rule.succesor[2];
 					labels = new List<GUIContent>{
 						new GUIContent("Bottom")
 					};
@@ -488,6 +590,8 @@ namespace GBBG
 					break;
 				case RuleComponent.SplitMode.SidesPlusBottom:
 					succesors.Resize(2, null);
+					succesors[0] = rule.succesor[0];
+					succesors[1] = rule.succesor[2];
 					labels = new List<GUIContent>{
 						new GUIContent("Sides"),
 						new GUIContent("Bottom")
@@ -498,6 +602,8 @@ namespace GBBG
 					break;
 				case RuleComponent.SplitMode.TopPlusBottom:
 					succesors.Resize(2, null);
+					succesors[0] = rule.succesor[1];
+					succesors[1] = rule.succesor[2];
 					labels = new List<GUIContent>{
 						new GUIContent("Top"),
 						new GUIContent("Bottom")
@@ -508,6 +614,9 @@ namespace GBBG
 					break;
 				default:
 					succesors.Resize(3, null);
+					succesors[0] = rule.succesor[0];
+					succesors[1] = rule.succesor[1];
+					succesors[2] = rule.succesor[2];
 					labels = new List<GUIContent>{
 						new GUIContent("Sides"),
 						new GUIContent("Top"),
@@ -538,6 +647,9 @@ namespace GBBG
 			rule.predescesor = EditorGUILayout.TextField(new GUIContent("Predecessor", "The symbol (string) that identifies the predecessor shape."), rule.predescesor);
 			if (!grammar.IsVocabulary(rule.predescesor))
 				EditorGUILayout.HelpBox("Predecessor not found in this grammar.", MessageType.Warning);
+
+			//axis
+			rule.axis = (Axis)EditorGUILayout.EnumPopup(new GUIContent("Axis", "The axis parallel to the division planes."), rule.axis);
 
 			//successor
 			rule.succesor[0] = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Successor"), rule.succesor[0], typeof(GameObject), false);
@@ -649,7 +761,7 @@ namespace GBBG
 				EditorGUILayout.HelpBox("Predecessor not found in this grammar.", MessageType.Warning);
 
 			//axis
-			rule.axis = (Axis)EditorGUILayout.EnumPopup(new GUIContent("Axis", "The axis perpendicular to the division planes."), rule.axis);
+			rule.axis = (Axis)EditorGUILayout.EnumPopup(new GUIContent("Axis", "The axis perpendicular to the division planes. Ignored if predecessor is 2D."), rule.axis);
 
 			//successor
 			rule.succesor[0] = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Successor"), rule.succesor[0], typeof(GameObject), false);
@@ -717,7 +829,10 @@ namespace GBBG
 		{
 			GUILayout.BeginHorizontal();
 			GUILayout.Label("Grammar selection", GUILayout.Width(115));
+			Grammar g = grammar;
 			grammar = (Grammar)EditorGUILayout.ObjectField(grammar, typeof(Grammar), false);
+			if (g != grammar)
+				selectedRuleIndex = 0;
 			GUILayout.EndHorizontal();
 			GUILayout.Space(5);
 		}

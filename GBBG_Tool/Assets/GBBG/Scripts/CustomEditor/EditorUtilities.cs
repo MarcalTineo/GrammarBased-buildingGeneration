@@ -1,6 +1,7 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -183,19 +184,83 @@ namespace GBBG
 			string path = AssetDatabase.GetAssetPath(rule.GetInstanceID());
 
 			//save unsaved changes
-			AssetDatabase.SaveAssetIfDirty(AssetDatabase.GUIDFromAssetPath(path));
+			//AssetDatabase.SaveAssetIfDirty(AssetDatabase.GUIDFromAssetPath(path));
 
 			//rename asset
 			string result = AssetDatabase.RenameAsset(path, newName);
 
 			//save assets
-			AssetDatabase.SaveAssets();
-
+			//AssetDatabase.SaveAssets();
+			AssetDatabase.Refresh();
 			//change so name
-			rule.name = newName;
+			//rule.name = newName;
 			return result;
 		}
 
+
+		/// <summary>
+		/// Copies an existing prefab to the given loaction.
+		/// </summary>
+		/// <param name="fromPath">The path of the asset to copy. Must include name and extension of the prefab</param>
+		/// <param name="name">The name of new prefab.</param>
+		/// <param name="toPath">The folder where the prefab will be copied to.</param>
+		/// <returns>True: all worked. False: someting failed.</returns>
+		public static string CopyPrefab(string fromPath, string name, string toPath)
+		{
+			if (!AssetDatabase.IsValidFolder(toPath))
+			{
+				Debug.LogError($"The path {toPath} does not exist.");
+				return null;
+			}
+			bool shapeCreated = false;
+			bool result = true;
+			int difIndex = 0;
+
+			string newAssetPath = null;
+			while (!shapeCreated)
+			{
+				newAssetPath = toPath + "/" + name + (difIndex == 0 ? "" : $" {difIndex}") + ".prefab";
+				if (string.IsNullOrEmpty(AssetDatabase.AssetPathToGUID(newAssetPath)))
+				{
+					result = AssetDatabase.CopyAsset(fromPath, newAssetPath);
+					shapeCreated = true;
+				}
+				difIndex++;
+			}
+			if (!result)
+			{
+				Debug.LogError("Failed to copy asset to " + toPath + ".");
+				return null;
+			}
+
+			return newAssetPath;
+		}
+
+
+		public static string CurrentProjectFolderPath
+		{
+			get
+			{
+				Type projectWindowUtilType = typeof(ProjectWindowUtil);
+				MethodInfo getActiveFolderPath = projectWindowUtilType.GetMethod("GetActiveFolderPath", BindingFlags.Static | BindingFlags.NonPublic);
+				object obj = getActiveFolderPath.Invoke(null, new object[0]);
+				return obj.ToString();
+			}
+		}
+
+		/// <summary>
+		/// Draws a text box
+		/// </summary>
+		/// <param name="info"></param>
+		public static void DrawInfo(string info)
+		{
+			EditorGUILayout.BeginVertical("box");
+			GUIStyle style = EditorStyles.label;
+			style.alignment = TextAnchor.UpperLeft;
+			style.wordWrap = true;
+			GUILayout.Label(info, style);
+			EditorGUILayout.EndVertical();
+		}
 
 
 

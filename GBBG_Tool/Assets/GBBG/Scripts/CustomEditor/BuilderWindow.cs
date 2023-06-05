@@ -43,11 +43,12 @@ namespace GBBG
 				canBuild =  axiom[0] != null;
 
 			EditorGUI.BeginDisabledGroup(!canBuild);
-			if(GUILayout.Button(new GUIContent("Build")))
+			if (GUILayout.Button(new GUIContent("Build"))) 
 			{
 				DerivationBuilder.GetInstance().Build(axiom, grammar, false);
 			}
 			EditorGUI.EndDisabledGroup();
+
 		}
 	}
 }

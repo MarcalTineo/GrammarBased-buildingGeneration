@@ -71,7 +71,12 @@ namespace GBBG
 			string notation = "{";
 			for (int i = 0; i < succesor.Count; i++)
 			{
-				notation += succesor[i].GetComponent<Shape>().ToString();
+				if (succesor[i] == null)
+				{
+					notation += "NULL";
+				}
+				else
+					notation += succesor[i].GetComponent<Shape>().ToString();
 				if (i < succesor.Count - 1)
 					notation += " | ";
 			}

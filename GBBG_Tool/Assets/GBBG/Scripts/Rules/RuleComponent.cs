@@ -65,7 +65,8 @@ namespace GBBG
 		{
 			Shape newShape = CreateNewShape3(succesor[2], shape);
 			newShape.Position = shape.Position + shape.Scale.z * shape.transform.forward;
-			newShape.Rotation = shape.Rotation * Quaternion.AngleAxis(270, shape.transform.right);
+			newShape.Rotation = shape.Rotation;
+			newShape.transform.RotateAround(newShape.transform.position, newShape.transform.right, 270);
 			newShape.Scale = new Vector3(shape.Scale.x, shape.Scale.z, 1);
 			newShape.Set2D();
 			return newShape;
@@ -75,7 +76,8 @@ namespace GBBG
 		{
 			Shape newShape = CreateNewShape2(succesor[1], shape.transform);
 			newShape.Position = shape.Position + shape.Scale.y * shape.transform.up;
-			newShape.Rotation = shape.Rotation * Quaternion.AngleAxis(90, shape.transform.right);
+			newShape.Rotation = shape.Rotation;
+			newShape.transform.RotateAround(newShape.transform.position, newShape.transform.right, 90); 
 			newShape.Scale = new Vector3(shape.Scale.x, shape.Scale.z, Shape.disabledDimension);
 			newShape.transform.SetParent(shape.transform);
 			return newShape;

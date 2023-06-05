@@ -75,7 +75,7 @@ namespace GBBG
 
             DrawTopBar();
             EditorGUILayout.Space(5);
-            DrawInfo(descriptions[step]);
+            EditorUtilities.DrawInfo(descriptions[step]);
             EditorGUILayout.Space(5);
             switch (step)
             {
@@ -123,15 +123,7 @@ namespace GBBG
             EditorGUILayout.EndHorizontal();
 		}
 
-		private void DrawInfo(string info)
-		{
-			EditorGUILayout.BeginVertical("box");
-			GUIStyle style = EditorStyles.label;
-			style.alignment = TextAnchor.UpperLeft;
-			style.wordWrap = true;
-			GUILayout.Label(info, style);
-			EditorGUILayout.EndVertical();
-		}
+		
 
 
 		#region StepControl
@@ -401,7 +393,7 @@ namespace GBBG
 			EditorGUI.EndDisabledGroup();
 			if (shapeCreated)
 			{
-				DrawInfo($"Please, save the object named <{terminalShapeName} (terminal shape)> created as a perfab to use in the post-production.");
+				EditorUtilities.DrawInfo($"Please, save the object named <{terminalShapeName} (terminal shape)> created as a perfab to use in the post-production.");
 				if (GUILayout.Button("Create New Shape"))
 				{
 					OnEnable();

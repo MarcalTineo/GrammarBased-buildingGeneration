@@ -26,24 +26,30 @@ namespace GBBG
 		public SelectRuleDelegate selectRuleDelegate = RuleSelectionHeuristics.GetFirst;
 
 		GameObject building;
+		GameObject derivationRoot;
 
-		
+
+
 
 		public void Build(List<Shape> axiom, Grammar grammar, bool doPostProduction)
 		{
 			this.axiom = axiom;
-			derivation = axiom;
+			derivation = new List<Shape>();
+			foreach (Shape s in axiom)
+				derivation.Add(Instantiate(s));
 			this.grammar = grammar;
 
 			//set hierarchy
 			SetHierarchy();
 
 			//derivation
-			foreach (Shape shape in derivation)
-			{
-				Derivate(shape);
-			}
 
+			Debugger.Log(0);
+			Derivate(derivation[0]);
+			//foreach (Shape shape in derivation)
+			//{
+			//}
+			Debugger.Log(1);
 			if (doPostProduction)
 			{
 				PostProduce(derivation);
@@ -53,7 +59,7 @@ namespace GBBG
 		#region derivation
 		private void SetHierarchy()
 		{
-			GameObject derivationRoot = new GameObject("Derivation");
+			derivationRoot = new GameObject("Derivation");
 
 			Vector3 averagePosition = Vector3.zero;
 			foreach (Shape shape in derivation)
@@ -63,11 +69,15 @@ namespace GBBG
 
 			derivationRoot.transform.position = averagePosition;
 			foreach (Shape shape in derivation)
+			{
 				shape.transform.parent = derivationRoot.transform;
+				shape.gameObject.SetActive(true);
+			}
 		}
 
 		private void Derivate(Shape shape)
 		{
+			Debugger.Log(2);
 			if (shape.IsTerminal)
 			{
 				return;
@@ -83,9 +93,11 @@ namespace GBBG
 				return;
 			}
 
+			Debugger.Log(3);
 			//select rule -- Need to chenge heuristics
 			selectedRule = selectRuleDelegate(validRules);
 
+			Debugger.Log(4);
 			//apply rule
 			List<Shape> newShapes = selectedRule.ApplyRule(shape);
 
