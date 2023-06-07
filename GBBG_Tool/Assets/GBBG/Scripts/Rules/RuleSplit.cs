@@ -38,7 +38,7 @@ namespace GBBG
 
 		public override List<Shape> ApplyRule(Shape shape)
 		{
-			Debug.Log(GetRuleNotation());
+			//Debug.Log(GetRuleNotation());
 			if (splitPoints.Count == succesor.Count - 1)
 			{
 				List<Shape> result = new List<Shape>();

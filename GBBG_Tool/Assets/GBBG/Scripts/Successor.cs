@@ -90,7 +90,8 @@ namespace GBBG
             List<Shape> result = new List<Shape>();
             foreach (SuccessorData data in possibleSuccessors)
             {
-                result.Add(data.successor.GetComponent<Shape>());
+                if(data.successor != null)
+                    result.Add(data.successor.GetComponent<Shape>());
             }
             return result;
         }

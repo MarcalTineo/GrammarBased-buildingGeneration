@@ -430,7 +430,11 @@ namespace GBBG
 			root.transform.position = pivotAreaPosition;
 
 			terminalObject.transform.parent = root.transform;
-			terminalObject.transform.localScale = new Vector3(1 / sizeAreaScale.x, 1 / sizeAreaScale.y, 1 / sizeAreaScale.z);
+			root.transform.localScale = new Vector3(1 / sizeAreaScale.x, 1 / sizeAreaScale.y, 1 / sizeAreaScale.z);
+			terminalObject.transform.parent = null;
+			root.transform.localScale = Vector3.one;
+			terminalObject.transform.parent = root.transform;
+
 		}
 		#endregion
 

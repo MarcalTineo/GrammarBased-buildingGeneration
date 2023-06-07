@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 943e47d90786c874cae1e27887d3de39, type: 3}
   m_Name: RoofTiles
   m_EditorClassIdentifier: 
-  predescesor: RoofTop
+  predescesor: RoofTop_A
   succesor:
-  - {fileID: 3142074239872119730, guid: b207ccd7ac1244e489159280d8f377a5, type: 3}
+  - possibleSuccessors:
+    - chance: 1
+      successor: {fileID: 3142074239872119730, guid: b207ccd7ac1244e489159280d8f377a5, type: 3}
   axis: 1

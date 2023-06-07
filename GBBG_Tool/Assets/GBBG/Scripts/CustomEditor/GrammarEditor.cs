@@ -106,8 +106,11 @@ namespace GBBG
 			{
 				CreateShapeWindow.ShowWindow(new Vector2(Screen.width / 2, Screen.height / 2), this);
 			}
+			RuleMode prev = ruleMode;
 			ruleMode = (RuleMode)EditorGUILayout.EnumPopup(ruleMode);
-			
+			if (ruleMode != prev)
+				selectedRuleIndex = 0;
+
 			GUILayout.EndHorizontal();
 			EditorGUI.EndDisabledGroup();
 		}
@@ -121,6 +124,7 @@ namespace GBBG
 		private void CreatePostProcess()
 		{
 			grammar.postProcesses.Add(new PostProcess("New Post-Process"));
+			selectedRuleIndex = grammar.postProcesses.Count - 1;
 			EditorUtility.SetDirty(grammar);
 			AssetDatabase.SaveAssetIfDirty(grammar);
 		}
@@ -128,6 +132,7 @@ namespace GBBG
 		private void CreatePostProcess(PostProcess process)
 		{
 			grammar.postProcesses.Add(new PostProcess(process));
+			selectedRuleIndex = grammar.postProcesses.Count - 1;
 			EditorUtility.SetDirty(grammar);
 			AssetDatabase.SaveAssetIfDirty(grammar);
 		}

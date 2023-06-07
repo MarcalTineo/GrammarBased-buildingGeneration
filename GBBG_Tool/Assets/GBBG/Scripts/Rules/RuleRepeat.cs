@@ -23,7 +23,7 @@ namespace GBBG
 
 		public override List<Shape> ApplyRule(Shape shape)
 		{
-			Debug.Log(GetRuleNotation());
+			//Debug.Log(GetRuleNotation());
 			List<Shape> result = new List<Shape>();
 			if (shape.Dimensions == 3)
 			{

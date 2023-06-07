@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 62db8f06edb76534fb6bf6d8ee8cc681, type: 3}
-  m_Name: RepeatEdgeSegment
+  m_Name: FootingEdgeSegment
   m_EditorClassIdentifier: 
-  predescesor: ROOFEDGE
+  predescesor: FootingEdge
   succesor:
   - possibleSuccessors:
     - chance: 1
-      successor: {fileID: 3142074239872119730, guid: d5b395d417e4acd41bf54ea9b9bf3532, type: 3}
+      successor: {fileID: 3142074239872119730, guid: aba4e55318674e94c9fed201c65d2ebf, type: 3}
   axis: 0

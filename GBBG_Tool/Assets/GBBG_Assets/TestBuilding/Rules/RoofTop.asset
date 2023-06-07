@@ -14,8 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   predescesor: ROOFCENTER
   succesor:
-  - {fileID: 0}
-  - {fileID: 3142074239872119730, guid: 20948528b8a1f114c96b12a80f84e13b, type: 3}
-  - {fileID: 0}
+  - possibleSuccessors:
+    - chance: 1
+      successor: {fileID: 0}
+  - possibleSuccessors:
+    - chance: 1
+      successor: {fileID: 3142074239872119730, guid: 20948528b8a1f114c96b12a80f84e13b, type: 3}
+  - possibleSuccessors:
+    - chance: 1
+      successor: {fileID: 0}
   splitMode: 2
   axis: 1

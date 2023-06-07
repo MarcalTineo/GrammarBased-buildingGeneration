@@ -14,8 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   predescesor: BODY
   succesor:
-  - {fileID: 3142074239872119730, guid: b5df9599d08f9e941ad9a8484da14530, type: 3}
-  - {fileID: 3142074239872119730, guid: a65d2ab52e765da49baa78e2693ea717, type: 3}
+  - possibleSuccessors:
+    - chance: 1
+      successor: {fileID: 3142074239872119730, guid: b5df9599d08f9e941ad9a8484da14530, type: 3}
+  - possibleSuccessors:
+    - chance: 1
+      successor: {fileID: 3142074239872119730, guid: a65d2ab52e765da49baa78e2693ea717, type: 3}
   axis: 1
   cuttingType: 0
   splitPoints:

@@ -37,7 +37,7 @@ namespace GBBG
 
 		public override List<Shape> ApplyRule(Shape shape)
 		{
-			Debug.Log(GetRuleNotation());
+			//Debug.Log(GetRuleNotation());
 			Shape newShape = CreateNewShape3(succesor[0].Get(), shape);
 			if (applyTranslation)
 				ApplyTranslation(newShape);

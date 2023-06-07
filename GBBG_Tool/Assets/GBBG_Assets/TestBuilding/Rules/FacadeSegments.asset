@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   predescesor: Facade
   succesor:
-  - {fileID: 3142074239872119730, guid: 1f7af39d4f65fcc4f882c28366287d4f, type: 3}
+  - possibleSuccessors:
+    - chance: 1
+      successor: {fileID: 3142074239872119730, guid: 1f7af39d4f65fcc4f882c28366287d4f, type: 3}
   axis: 0

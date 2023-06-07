@@ -45,7 +45,7 @@ namespace GBBG
 			EditorGUI.BeginDisabledGroup(!canBuild);
 			if (GUILayout.Button(new GUIContent("Build"))) 
 			{
-				DerivationBuilder.GetInstance().Build(axiom, grammar, false);
+				DerivationBuilder.GetInstance().Build(axiom, grammar, doPostProduction);
 			}
 			EditorGUI.EndDisabledGroup();
 

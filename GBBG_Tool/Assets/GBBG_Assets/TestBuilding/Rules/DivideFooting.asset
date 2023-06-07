@@ -14,8 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   predescesor: FOOTING_B
   succesor:
-  - {fileID: 3142074239872119730, guid: f87983d38f20a364f84de5406af3a6b6, type: 3}
-  - {fileID: 3142074239872119730, guid: 04c4b647552957d49813afa87caa7221, type: 3}
+  - possibleSuccessors:
+    - chance: 1
+      successor: {fileID: 3142074239872119730, guid: f87983d38f20a364f84de5406af3a6b6, type: 3}
+  - possibleSuccessors:
+    - chance: 1
+      successor: {fileID: 3142074239872119730, guid: 04c4b647552957d49813afa87caa7221, type: 3}
   axis: 1
   margin: 4
   marginType: 0

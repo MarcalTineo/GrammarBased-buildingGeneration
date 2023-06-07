@@ -24,4 +24,14 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4c02835c3a27e81408a8308f984a8902, type: 2}
   - {fileID: 11400000, guid: c5bd1db844d02654cbb9c1cc42638454, type: 2}
   - {fileID: 11400000, guid: b920f1cee59756947836d5722fbc2a84, type: 2}
-  postProcesses: []
+  - {fileID: 11400000, guid: 4b6b0b7bdc3c7f049b698c3225a622a4, type: 2}
+  - {fileID: 11400000, guid: 175625f26ab051f499627e27adf5f7d0, type: 2}
+  postProcesses:
+  - symbol: ROOFCORNER
+    asset: {fileID: 733371347709599109, guid: 4eb4ceebdd2c1684884280c4253116b9, type: 3}
+  - symbol: RoofEdgeSegment
+    asset: {fileID: 7415128921717003325, guid: 2ba8fa516639b6448997ab0bc678ba2e, type: 3}
+  - symbol: RoofTopSegment
+    asset: {fileID: 8985162189272134395, guid: e8427bee346a339468825838a08d541b, type: 3}
+  - symbol: FacadeSegment
+    asset: {fileID: 879574518997097112, guid: f5290be166178684ea7d8be70120d596, type: 3}
