@@ -30,7 +30,7 @@ namespace GBBG
 		public override void Init()
 		{
 			base.Init();
-			succesor.Resize(3, null);
+			succesor.Resize(3);
 		}
 
 		public override List<Shape> ApplyRule(Shape shape)
@@ -42,7 +42,7 @@ namespace GBBG
 			Vector3 cornerSize = Vector3.zero;
 			if (marginFromCorners)
 			{
-				Shape cornerSuccessor = succesor[0].GetComponent<Shape>();
+				Shape cornerSuccessor = succesor[0].Get().GetComponent<Shape>();
 				cornerSize = new Vector3(
 					cornerSuccessor.PreferedSize.x <= shape.Scale.x / 2 ? cornerSuccessor.PreferedSize.x : shape.Scale.x / 2,
 					cornerSuccessor.PreferedSize.y <= shape.Scale.y / 2 ? cornerSuccessor.PreferedSize.y : shape.Scale.y / 2,
@@ -92,14 +92,14 @@ namespace GBBG
 							}
 							else if (i % 2 == 0 && j % 2 == 0) //corner
 							{
-								newShape = CreateNewShape3(succesor[0], shape);
+								newShape = CreateNewShape3(succesor[0].Get(), shape);
 								Vector2 positionDelta = new Vector2(i == 2 ? 0 : shape.Scale.z - marginAbs.x, j == 2 ? 0 : shape.Scale.y - marginAbs.y);
 								newShape.Position = newShape.Position + shape.transform.forward * positionDelta.x + shape.transform.up * positionDelta.y;
 								newShape.Scale = new Vector3(shape.Scale.x, marginAbs.y, marginAbs.x);
 							}
 							else //edges
 							{
-								newShape = CreateNewShape3(succesor[1], shape);
+								newShape = CreateNewShape3(succesor[1].Get(), shape);
 								newShape.gameObject.name = "SHAPE" + i + j;
 								if (i == 1)
 								{
@@ -159,7 +159,7 @@ namespace GBBG
 							}
 							if (i % 2 == 0 && j % 2 == 0) //corner
 							{
-								newShape = CreateNewShape3(succesor[0], shape);
+								newShape = CreateNewShape3(succesor[0].Get(), shape);
 								Vector2 positionDelta = new Vector2(i == 2 ? 0 : shape.Scale.x - marginAbs.x, j == 2 ? 0 : shape.Scale.z - marginAbs.y);
 								newShape.Position = newShape.Position + shape.transform.right * positionDelta.x + shape.transform.forward * positionDelta.y;
 								newShape.Scale = new Vector3(marginAbs.x, shape.Scale.y, marginAbs.y);
@@ -185,7 +185,7 @@ namespace GBBG
 							}
 							else //edges
 							{
-								newShape = CreateNewShape3(succesor[1], shape);
+								newShape = CreateNewShape3(succesor[1].Get(), shape);
 								if (i == 1)
 								{
 									newShape.Scale = new Vector3(shape.Scale.x - marginAbs.x * 2, shape.Scale.y, marginAbs.y);
@@ -270,14 +270,14 @@ namespace GBBG
 							}
 							if (i % 2 == 0 && j % 2 == 0) //corner
 							{
-								newShape = CreateNewShape3(succesor[0], shape);
+								newShape = CreateNewShape3(succesor[0].Get(), shape);
 								Vector2 positionDelta = new Vector2(i == 2 ? 0 : shape.Scale.x - marginAbs.x, j == 2 ? 0 : shape.Scale.y - marginAbs.y);
 								newShape.Position = newShape.Position + shape.transform.right * positionDelta.x + shape.transform.up * positionDelta.y;
 								newShape.Scale = new Vector3(marginAbs.x, marginAbs.y, shape.Scale.z);
 							}
 							else //edges
 							{
-								newShape = CreateNewShape3(succesor[1], shape);
+								newShape = CreateNewShape3(succesor[1].Get(), shape);
 								if (i == 1)
 								{
 									newShape.Scale = new Vector3(shape.Scale.x - marginAbs.x * 2, marginAbs.y, shape.Scale.z);
@@ -311,7 +311,7 @@ namespace GBBG
 
 		private Shape GetCenterPiece(Axis axis, Shape shape, Vector2 marginAbs)
 		{
-			Shape newShape = CreateNewShape3(succesor[2], shape);
+			Shape newShape = CreateNewShape3(succesor[2].Get(), shape);
 			switch (axis)
 			{
 				case Axis.X:

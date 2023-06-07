@@ -21,21 +21,18 @@ namespace GBBG
 
 			foreach (Rule rule in rules)
 			{
-				foreach (GameObject successor in rule.succesor)
+				foreach (Successor successor in rule.succesor)
 				{
 					if (successor == null)
 						continue;
-					//Debug.Log(successor);
-					//Debug.Log(successor.GetComponent<Shape>());
-					//Debug.Log(successor.GetComponent<Shape>().Symbol);
-
-
-					string symbol = successor.GetComponent<Shape>().Symbol;
-					if(!shapes.Contains(symbol))
-						shapes.Add(symbol);
+					List<string> symbols = successor.GetVocabulary();
+					foreach (string sym in symbols)
+					{
+						if (!shapes.Contains(sym))
+							shapes.Add(sym);
+					}
 				}
 			}
-
 			return shapes;
 		}
 
@@ -50,17 +47,20 @@ namespace GBBG
 			List <string> addedShapes = new List<string>();
 			foreach (Rule rule in rules)
 			{
-				foreach (GameObject successor in rule.succesor)
+				foreach (Successor successor in rule.succesor)
 				{
 					if (successor == null)
 						continue;
 
-
-					string symbol = successor.GetComponent<Shape>().Symbol;
-					if (!addedShapes.Contains(symbol))
+					List<Shape> newShapes = successor.GetVocabularyShape();
+					foreach (Shape shape in newShapes)
 					{
-						shapes.Add(successor.GetComponent<Shape>());
-						addedShapes.Add(symbol);
+						string symbol = shape.Symbol;
+						if (!addedShapes.Contains(symbol))
+						{
+							shapes.Add(shape);
+							addedShapes.Add(symbol);
+						}
 					}
 				}
 			}

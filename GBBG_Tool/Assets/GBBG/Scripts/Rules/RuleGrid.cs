@@ -23,7 +23,7 @@ namespace GBBG
 				{
 					for (int j = 0; j < tiles.y; j++)
 					{
-						Shape newShape = CreateNewShape3(succesor[0], shape);
+						Shape newShape = CreateNewShape3(succesor[0].Get(), shape);
 						newShape.Position += shape.transform.right * tileSize.x * i;
 						newShape.Position += shape.transform.up * tileSize.y * j;
 
@@ -44,7 +44,7 @@ namespace GBBG
 					{
 						for (int j = 0; j < tiles.y; j++)
 						{
-							Shape newShape = CreateNewShape3(succesor[0], shape);
+							Shape newShape = CreateNewShape3(succesor[0].Get(), shape);
 							newShape.Position += shape.transform.right * tileSize.x * i;
 							newShape.Position += shape.transform.up * tileSize.y * j;
 							
@@ -61,7 +61,7 @@ namespace GBBG
 					{
 						for (int j = 0; j < tiles.y; j++)
 						{
-							Shape newShape = CreateNewShape3(succesor[0], shape);
+							Shape newShape = CreateNewShape3(succesor[0].Get(), shape);
 							newShape.Position += shape.transform.right * tileSize.x * i;
 							newShape.Position += shape.transform.forward * tileSize.y * j;
 
@@ -77,7 +77,7 @@ namespace GBBG
 					{
 						for (int j = 0; j < tiles.y; j++)
 						{
-							Shape newShape = CreateNewShape3(succesor[0], shape);
+							Shape newShape = CreateNewShape3(succesor[0].Get(), shape);
 							newShape.Position += shape.transform.forward * tileSize.x * i;
 							newShape.Position += shape.transform.up * tileSize.y * j;
 
@@ -100,18 +100,18 @@ namespace GBBG
 			switch (plane)
 			{
 				case Axis.X:
-					tilesX = succesor[0].GetComponent<Shape>().PreferedSize.x == 0 ? 1 : Mathf.RoundToInt(shape.Scale.x / succesor[0].GetComponent<Shape>().PreferedSize.x);
-					tilesY = succesor[0].GetComponent<Shape>().PreferedSize.y == 0 ? 1 : Mathf.RoundToInt(shape.Scale.y / succesor[0].GetComponent<Shape>().PreferedSize.y);
+					tilesX = succesor[0].Get().GetComponent<Shape>().PreferedSize.x == 0 ? 1 : Mathf.RoundToInt(shape.Scale.x / succesor[0].Get().GetComponent<Shape>().PreferedSize.x);
+					tilesY = succesor[0].Get().GetComponent<Shape>().PreferedSize.y == 0 ? 1 : Mathf.RoundToInt(shape.Scale.y / succesor[0].Get().GetComponent<Shape>().PreferedSize.y);
 					tiles = new Vector2Int(tilesX, tilesY);
 					break;
 				case Axis.Y:
-					tilesX = succesor[0].GetComponent<Shape>().PreferedSize.x == 0 ? 1 : Mathf.RoundToInt(shape.Scale.x / succesor[0].GetComponent<Shape>().PreferedSize.x);
-					tilesY = succesor[0].GetComponent<Shape>().PreferedSize.y == 0 ? 1 : Mathf.RoundToInt(shape.Scale.z / succesor[0].GetComponent<Shape>().PreferedSize.z);
+					tilesX = succesor[0].Get().GetComponent<Shape>().PreferedSize.x == 0 ? 1 : Mathf.RoundToInt(shape.Scale.x / succesor[0].Get().GetComponent<Shape>().PreferedSize.x);
+					tilesY = succesor[0].Get().GetComponent<Shape>().PreferedSize.y == 0 ? 1 : Mathf.RoundToInt(shape.Scale.z / succesor[0].Get().GetComponent<Shape>().PreferedSize.z);
 					tiles = new Vector2Int(tilesX, tilesY);
 					break;
 				case Axis.Z:
-					tilesX = succesor[0].GetComponent<Shape>().PreferedSize.x == 0 ? 1 : Mathf.RoundToInt(shape.Scale.z / succesor[0].GetComponent<Shape>().PreferedSize.z);
-					tilesY = succesor[0].GetComponent<Shape>().PreferedSize.y == 0 ? 1 : Mathf.RoundToInt(shape.Scale.y / succesor[0].GetComponent<Shape>().PreferedSize.y);
+					tilesX = succesor[0].Get().GetComponent<Shape>().PreferedSize.x == 0 ? 1 : Mathf.RoundToInt(shape.Scale.z / succesor[0].Get().GetComponent<Shape>().PreferedSize.z);
+					tilesY = succesor[0].Get().GetComponent<Shape>().PreferedSize.y == 0 ? 1 : Mathf.RoundToInt(shape.Scale.y / succesor[0].Get().GetComponent<Shape>().PreferedSize.y);
 					tiles = new Vector2Int(tilesX, tilesY);
 					break;
 				default:

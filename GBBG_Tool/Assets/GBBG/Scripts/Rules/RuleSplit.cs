@@ -32,7 +32,7 @@ namespace GBBG
 		public override void Init()
 		{
 			base.Init();
-			succesor.Resize(2, null);
+			succesor.Resize(2);
 			splitPoints = new List<float>();
 		}
 
@@ -50,7 +50,7 @@ namespace GBBG
 						{
 							for (int i = 0; i < succesor.Count; i++)
 							{
-								Shape newShape = CreateNewShape3(succesor[i], shape);
+								Shape newShape = CreateNewShape3(succesor[i].Get(), shape);
 								newShape.Position += newShape.transform.right * currentPos;
 								if (i == succesor.Count - 1)
 									newShape.Scale = new Vector3(shape.Scale.x - currentPos, shape.Scale.y, shape.Scale.z);
@@ -67,7 +67,7 @@ namespace GBBG
 							currentPos = shape.Scale.x;
 							for (int i = 0; i < succesor.Count; i++)
 							{
-								Shape newShape = CreateNewShape3(succesor[i], shape);
+								Shape newShape = CreateNewShape3(succesor[i].Get(), shape);
 								if (i == succesor.Count - 1)
 								{
 									newShape.Scale = new Vector3(currentPos, newShape.Scale.y, newShape.Scale.z);
@@ -89,7 +89,7 @@ namespace GBBG
 						{
 							for (int i = 0; i < succesor.Count; i++)
 							{
-								Shape newShape = CreateNewShape3(succesor[i], shape);
+								Shape newShape = CreateNewShape3(succesor[i].Get(), shape);
 								newShape.Position += newShape.transform.up * currentPos;
 								if (i == succesor.Count - 1)
 									newShape.Scale = new Vector3(shape.Scale.x, shape.Scale.y - currentPos, shape.Scale.z);
@@ -106,7 +106,7 @@ namespace GBBG
 							currentPos = shape.Scale.y;
 							for (int i = 0; i < succesor.Count; i++)
 							{
-								Shape newShape = CreateNewShape3(succesor[i], shape);
+								Shape newShape = CreateNewShape3(succesor[i].Get(), shape);
 								if (i == succesor.Count - 1)
 								{
 									newShape.Scale = new Vector3(newShape.Scale.x, currentPos, newShape.Scale.z);
@@ -128,7 +128,7 @@ namespace GBBG
 						{
 							for (int i = 0; i < succesor.Count; i++)
 							{
-								Shape newShape = CreateNewShape3(succesor[i], shape);
+								Shape newShape = CreateNewShape3(succesor[i].Get(), shape);
 								newShape.Position += newShape.transform.forward * currentPos;
 								if (i == succesor.Count - 1)
 									newShape.Scale = new Vector3(shape.Scale.x, shape.Scale.y, shape.Scale.z - currentPos);
@@ -145,7 +145,7 @@ namespace GBBG
 							currentPos = shape.Scale.z;
 							for (int i = 0; i < succesor.Count; i++)
 							{
-								Shape newShape = CreateNewShape3(succesor[i], shape);
+								Shape newShape = CreateNewShape3(succesor[i].Get(), shape);
 								if (i == succesor.Count - 1)
 								{
 									newShape.Scale = new Vector3(newShape.Scale.x, newShape.Scale.y, currentPos);

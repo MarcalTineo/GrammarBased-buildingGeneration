@@ -21,7 +21,7 @@ namespace GBBG
 		public override void Init()
 		{
 			base.Init();
-			succesor.Resize(3, null);
+			succesor.Resize(3);
 		}
 
 		public override List<Shape> ApplyRule(Shape shape)
@@ -63,7 +63,7 @@ namespace GBBG
 
 		private Shape GenerateBottom(Shape shape)
 		{
-			Shape newShape = CreateNewShape3(succesor[2], shape);
+			Shape newShape = CreateNewShape3(succesor[2].Get(), shape);
 			newShape.Position = shape.Position + shape.Scale.z * shape.transform.forward;
 			newShape.Rotation = shape.Rotation;
 			newShape.transform.RotateAround(newShape.transform.position, newShape.transform.right, 270);
@@ -74,7 +74,7 @@ namespace GBBG
 
 		private Shape GenerateTop(Shape shape)
 		{
-			Shape newShape = CreateNewShape2(succesor[1], shape.transform);
+			Shape newShape = CreateNewShape2(succesor[1].Get(), shape.transform);
 			newShape.Position = shape.Position + shape.Scale.y * shape.transform.up;
 			newShape.Rotation = shape.Rotation;
 			newShape.transform.RotateAround(newShape.transform.position, newShape.transform.right, 90); 
@@ -87,28 +87,28 @@ namespace GBBG
 		{
 			List<Shape> result = new List<Shape>();
 
-			Shape newShape = CreateNewShape2(succesor[0], shape.transform);
+			Shape newShape = CreateNewShape2(succesor[0].Get(), shape.transform);
 			newShape.Position = shape.Position;
 			newShape.Rotation = shape.Rotation;
 			newShape.Scale = new Vector3(shape.Scale.x, shape.Scale.y, Shape.disabledDimension);
 			newShape.transform.SetParent(shape.transform);
 			result.Add(newShape);
 
-			newShape = CreateNewShape2(succesor[0], shape.transform);
+			newShape = CreateNewShape2(succesor[0].Get(), shape.transform);
 			newShape.Position = shape.Position + shape.Scale.x * shape.transform.right;
 			newShape.Rotation = newShape.Rotation * Quaternion.AngleAxis(270, Vector3.up);
 			newShape.Scale = new Vector3(shape.Scale.z, shape.Scale.y, Shape.disabledDimension);
 			newShape.transform.SetParent(shape.transform);
 			result.Add(newShape);
 
-			newShape = CreateNewShape2(succesor[0], shape.transform);
+			newShape = CreateNewShape2(succesor[0].Get(), shape.transform);
 			newShape.Position = shape.Position + shape.Scale.x * shape.transform.right + shape.Scale.z * shape.transform.forward;
 			newShape.Rotation = newShape.Rotation * Quaternion.AngleAxis(180, Vector3.up);
 			newShape.Scale = new Vector3(shape.Scale.x, shape.Scale.y, Shape.disabledDimension);
 			newShape.transform.SetParent(shape.transform);
 			result.Add(newShape);
 
-			newShape = CreateNewShape2(succesor[0], shape.transform);
+			newShape = CreateNewShape2(succesor[0].Get(), shape.transform);
 			newShape.Position = shape.Position + shape.Scale.z * shape.transform.forward;
 			newShape.Rotation = newShape.Rotation * Quaternion.AngleAxis(90, Vector3.up);
 			newShape.Scale = new Vector3(shape.Scale.z, shape.Scale.y, Shape.disabledDimension);

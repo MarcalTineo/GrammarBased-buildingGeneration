@@ -132,7 +132,7 @@ MonoBehaviour:
   - {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
   - {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
   - {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
-  symbol: 
+  symbol: Facade
   geometry: 2
   isTerminal: 0
   dimensions: 2

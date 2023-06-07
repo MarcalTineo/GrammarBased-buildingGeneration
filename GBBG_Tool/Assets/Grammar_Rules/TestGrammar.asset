@@ -13,7 +13,12 @@ MonoBehaviour:
   m_Name: TestGrammar
   m_EditorClassIdentifier: 
   rules:
-  - {fileID: 11400000, guid: 8580c1fcc9108a742a7011c973b013da, type: 2}
+  - {fileID: 11400000, guid: 3fdf052a2754697459a965f9b0ed1e6e, type: 2}
+  - {fileID: 11400000, guid: 8b3031c11c1fa9e4f9a0215b98741722, type: 2}
+  - {fileID: 11400000, guid: f174908f1f5edf04d934d23dccc39a83, type: 2}
+  - {fileID: 11400000, guid: d21e704b74e89044aa0185a1cbf0021d, type: 2}
+  - {fileID: 11400000, guid: bc054a3d81efad942a850d6ea4737ae2, type: 2}
+  - {fileID: 11400000, guid: 6d303380c3994d24f891312508a3ce8e, type: 2}
   postProcesses:
   - symbol: New Post-Process
     asset: {fileID: 0}

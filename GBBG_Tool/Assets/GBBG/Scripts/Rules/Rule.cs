@@ -12,7 +12,7 @@ namespace GBBG
 	{
 		//public enum Axis { X, Y, Z };
 		public string predescesor;
-		public List<GameObject> succesor;
+		public List<Successor> succesor;
 
 		public virtual List<Shape> ApplyRule(Shape shape) { return null; }
 
@@ -20,9 +20,9 @@ namespace GBBG
 
 		public virtual void Init() 
 		{
-			succesor = new List<GameObject>
+			succesor = new List<Successor>
 			{
-				null
+				new Successor()
 			};
 			EditorUtility.SetDirty(this);
 		}
@@ -76,12 +76,14 @@ namespace GBBG
 					notation += "NULL";
 				}
 				else
-					notation += succesor[i].GetComponent<Shape>().ToString();
+					notation += succesor[i].Get().GetComponent<Shape>().ToString();
 				if (i < succesor.Count - 1)
 					notation += " | ";
 			}
 			notation += "}";
 			return notation;
 		}
+
+		
 	}
 }

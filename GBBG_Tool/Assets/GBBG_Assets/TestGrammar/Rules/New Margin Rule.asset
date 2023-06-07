@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e20428eadf9abfb4481a6d542a431aff, type: 3}
-  m_Name: New Corner Rule
+  m_Name: New Margin Rule
   m_EditorClassIdentifier: 
-  predescesor: START
+  predescesor: 
   succesor:
   - possibleSuccessors:
     - chance: 1
@@ -20,11 +20,8 @@ MonoBehaviour:
   - possibleSuccessors:
     - chance: 1
       successor: {fileID: 0}
-  - possibleSuccessors:
-    - chance: 1
-      successor: {fileID: 0}
-  axis: 1
+  axis: 0
   margin: 0
   marginType: 0
-  cornerOrientation: 1
-  includeCenterPiece: 1
+  cornerOrientation: 0
+  includeCenterPiece: 0

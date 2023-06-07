@@ -9,6 +9,123 @@ namespace GBBG
 {
 	public static class EditorUtilities
 	{
+		public static Dictionary<string, bool> expandFoldout = new Dictionary<string, bool>();
+		
+		public static bool GetExpand(string s)
+		{
+			if (expandFoldout.ContainsKey(s))
+				return expandFoldout[s];
+			else
+				return false;
+		}
+
+		public static void SetExpand(string s, bool b)
+		{
+			if(expandFoldout.ContainsKey(s))
+				expandFoldout[s] = b;
+			else
+				expandFoldout.Add(s, b);
+		}
+
+		/// <summary>
+		/// Draws a list of successors
+		/// </summary>
+		/// <param name="list"></param>
+		/// <param name="name"></param>
+		/// <param name="expandFoldout"></param>
+		/// <returns></returns>
+		public static List<Successor> DrawSuccessorList(List<Successor> list, GUIContent name, ref bool expandFoldout)
+		{
+			int count = list.Count;
+			GUILayout.BeginHorizontal();
+			expandFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(expandFoldout, name);
+			count = EditorGUILayout.DelayedIntField(count, GUILayout.Width(50));
+			count = Mathf.Max(1, count);
+			if (count != list.Count)
+				list.Resize(count);
+			GUILayout.EndHorizontal();
+			if (expandFoldout)
+			{
+				EditorGUI.indentLevel++;
+				EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+				for (int i = 0; i < list.Count; i++)
+				{
+					list[i] = DrawSuccessorField(list[i]);
+				}
+				EditorGUILayout.EndVertical();
+				EditorGUI.indentLevel--;
+			}
+			EditorGUILayout.EndFoldoutHeaderGroup();
+			return list;
+		}
+
+		public static List<Successor> DrawLabeledSuccessorList (List<Successor> list, GUIContent name, ref bool expandFoldout, List<GUIContent> labels)
+		{
+			if (labels.Count < 1)
+			{
+				Debug.LogError("No labels set");
+				return null;
+			}
+			int count = labels.Count;
+			GUILayout.BeginHorizontal();
+			expandFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(expandFoldout, name);
+			EditorGUI.BeginDisabledGroup(true);
+			EditorGUILayout.DelayedIntField(count, GUILayout.Width(50));
+			EditorGUI.EndDisabledGroup();
+			if (count != list.Count)
+				list.Resize(3);
+
+			GUILayout.EndHorizontal();
+			if (expandFoldout)
+			{
+				EditorGUI.indentLevel++;
+				EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+				for (int i = 0; i < list.Count; i++)
+				{
+					GUILayout.Label(labels[i]);
+					list[i] = DrawSuccessorField(list[i]);
+				}
+				EditorGUILayout.EndVertical();
+				EditorGUI.indentLevel--;
+			}
+			EditorGUILayout.EndFoldoutHeaderGroup();
+			return list;
+		}
+		public static List<Successor> DrawLabeledSuccessorList(List<Successor> list, string name, ref bool expandFoldout, List<GUIContent> labels)
+		{
+			return DrawLabeledSuccessorList(list, new GUIContent(name), ref expandFoldout, labels);
+		}
+
+		/// <summary>
+		/// Draws a field for successor on inspector
+		/// </summary>
+		/// <param name="s">The values of the successor to be displayed</param>
+		/// <returns>The actualized successor</returns>
+		public static Successor DrawSuccessorField(Successor s)
+		{
+			EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+			float lw = EditorGUIUtility.labelWidth;
+			int count = s.possibleSuccessors.Count;
+
+			count = EditorGUILayout.DelayedIntField(new GUIContent("Possibilities"), count);
+			count = Mathf.Max(1, count);
+			if (count != s.possibleSuccessors.Count)
+				s.possibleSuccessors.Resize(count, new SuccessorData());
+
+			EditorGUIUtility.labelWidth = 100;
+			foreach (SuccessorData data in s.possibleSuccessors)
+			{
+				Rect r = EditorGUILayout.BeginHorizontal();
+				data.chance = EditorGUILayout.FloatField(new GUIContent("Chance"), data.chance);
+				data.successor = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Successor"), data.successor, typeof(GameObject), false);
+				EditorGUILayout.EndHorizontal();
+				if (data.chance == 0) EditorGUILayout.HelpBox("Chance 0 may cause errors.", MessageType.Warning);
+			}
+			EditorGUIUtility.labelWidth = lw;
+			EditorGUILayout.EndVertical();
+			return s;
+		}
+
 		/// <summary>
 		/// Draws an editor GUI for lists of Objects
 		/// </summary>
@@ -170,6 +287,22 @@ namespace GBBG
 		{
 			Resize(list, size, new T());
 		}
+		public static void ResizeSOList<T>(this List<T> list, int size) where T : ScriptableObject
+		{
+			int current = list.Count;
+			if (size < current)
+				list.RemoveRange(size, current - size);
+			else if (size > current)
+			{
+				if (size > list.Capacity)//this bit is purely an optimisation, to avoid multiple automatic capacity changes.
+					list.Capacity = size;
+				for (int i = current; i < size; i++)
+				{
+					list.Add(ScriptableObject.CreateInstance(typeof(T)) as T);
+				}
+			}
+		}
+
 
 
 		/// <summary>
@@ -247,6 +380,8 @@ namespace GBBG
 				return obj.ToString();
 			}
 		}
+
+		
 
 		/// <summary>
 		/// Draws a text box

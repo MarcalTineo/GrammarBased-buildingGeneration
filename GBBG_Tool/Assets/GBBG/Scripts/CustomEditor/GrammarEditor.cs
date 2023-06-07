@@ -273,7 +273,7 @@ namespace GBBG
 			ScriptableObject ruleToDelete = grammar.rules[selectedRuleIndex];
 			grammar.rules.RemoveAt(selectedRuleIndex);
 			
-			Debug.Log(AssetDatabase.DeleteAsset(AssetDatabase.GetAssetPath(ruleToDelete)));
+			AssetDatabase.DeleteAsset(AssetDatabase.GetAssetPath(ruleToDelete));
 			AssetDatabase.Refresh();
 			selectedRuleIndex = Mathf.Clamp(selectedRuleIndex, 0, grammar.rules.Count-1);
 			Repaint();
@@ -406,10 +406,8 @@ namespace GBBG
 				{
 					DrawRuleCornerInspector((RuleCorner)rule);
 				}
-				if (GUI.changed)
-				{
-					EditorUtility.SetDirty(rule);
-				}
+				EditorUtility.SetDirty(rule);
+				
 			}
 			else
 			{
@@ -435,7 +433,6 @@ namespace GBBG
 				EditorGUILayout.HelpBox("Shape is not terminal.", MessageType.Warning);
 
 			process.asset = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Final Asset"), process.asset, typeof(GameObject), false);
-
 
 		}
 
@@ -473,7 +470,7 @@ namespace GBBG
 			rule.includeCenterPiece = EditorGUILayout.Toggle(new GUIContent("Include Center Piece"), rule.includeCenterPiece);
 
 			//successor
-			List<GameObject> succesors = rule.succesor; 
+			List<Successor> succesors = rule.succesor; 
 			List<GUIContent> labels;
 			if (rule.includeCenterPiece)
 			{
@@ -483,8 +480,8 @@ namespace GBBG
 					new GUIContent("Edge"),
 					new GUIContent("Center")
 				};
-				succesors.Resize(labels.Count, null);
-				succesors = EditorUtilities.DrawObjectList(succesors, "Successors", ref inspectorFoldoutTracker1, labels, true);
+				succesors.Resize(labels.Count);
+				succesors = EditorUtilities.DrawLabeledSuccessorList(succesors, "Successors", ref inspectorFoldoutTracker1, labels);
 				rule.succesor[0] = succesors[0];
 				rule.succesor[1] = succesors[1];
 				rule.succesor[2] = succesors[2];
@@ -497,12 +494,11 @@ namespace GBBG
 					new GUIContent("Corner"),
 					new GUIContent("Edge"),
 				};
-				succesors.Resize(labels.Count, null);
-				succesors = EditorUtilities.DrawObjectList(succesors, "Successors", ref inspectorFoldoutTracker1, labels, true);
+				succesors.Resize(labels.Count);
+				succesors = EditorUtilities.DrawLabeledSuccessorList(succesors, "Successors", ref inspectorFoldoutTracker1, labels);
 				rule.succesor[0] = succesors[0];
 				rule.succesor[1] = succesors[1];
 			}
-
 		}
 
 		private void DrawRuleComponentInspector(RuleComponent rule)
@@ -529,13 +525,13 @@ namespace GBBG
 			rule.splitMode = (RuleComponent.SplitMode)EditorGUILayout.EnumPopup(new GUIContent("Split Mode", "Determines which components are the ones to be saved"), rule.splitMode);
 
 			//successors
-			List<GameObject> succesors = new List<GameObject>();
+			List<Successor> succesors = new List<Successor>();
 			
 			List<GUIContent> labels;
 			switch (rule.splitMode)
 			{
 				case RuleComponent.SplitMode.AllFaces:
-					succesors.Resize(3, null);
+					succesors.Resize(3);
 					succesors[0] = rule.succesor[0];
 					succesors[1] = rule.succesor[1];
 					succesors[2] = rule.succesor[2];
@@ -544,7 +540,8 @@ namespace GBBG
 						new GUIContent("Top"),
 						new GUIContent("Bottom")
 					};
-					succesors = EditorUtilities.DrawObjectList(succesors, "Successors", ref inspectorFoldoutTracker1, labels, true);
+					succesors = EditorUtilities.DrawLabeledSuccessorList(succesors, "Successors", ref inspectorFoldoutTracker1, labels);
+					//succesors = EditorUtilities.DrawObjectList(succesors, "Successors", ref inspectorFoldoutTracker1, labels, true);
 					rule.succesor[0] = succesors[0];
 					rule.succesor[1] = succesors[1];
 					rule.succesor[2] = succesors[2];
@@ -555,28 +552,28 @@ namespace GBBG
 					labels = new List<GUIContent>{
 						new GUIContent("Sides")
 					};
-					succesors = EditorUtilities.DrawObjectList(succesors, "Successors", ref inspectorFoldoutTracker1, labels, true);
+					succesors = EditorUtilities.DrawLabeledSuccessorList(succesors, "Successors", ref inspectorFoldoutTracker1, labels);
 					rule.succesor[0] = succesors[0];
 					break;
 				case RuleComponent.SplitMode.SidesPlusTop:
-					succesors.Resize(2, null);
+					succesors.Resize(2);
 					succesors[0] = rule.succesor[0];
 					succesors[1] = rule.succesor[1];
 					labels = new List<GUIContent>{
 						new GUIContent("Sides"),
 						new GUIContent("Top")
 					};
-					succesors = EditorUtilities.DrawObjectList(succesors, "Successors", ref inspectorFoldoutTracker1, labels, true);
+					succesors = EditorUtilities.DrawLabeledSuccessorList(succesors, "Successors", ref inspectorFoldoutTracker1, labels);
 					rule.succesor[0] = succesors[0];
 					rule.succesor[1] = succesors[1];
 					break;
 				case RuleComponent.SplitMode.Top:
-					succesors.Resize(1, null);
+					succesors.Resize(1);
 					succesors[0] = rule.succesor[1];
 					labels = new List<GUIContent>{
 						new GUIContent("Top"),
 					};
-					succesors = EditorUtilities.DrawObjectList(succesors, "Successors", ref inspectorFoldoutTracker1, labels, true);
+					succesors = EditorUtilities.DrawLabeledSuccessorList(succesors, "Successors", ref inspectorFoldoutTracker1, labels);
 					rule.succesor[1] = succesors[0];
 					break;
 				case RuleComponent.SplitMode.Bottom:
@@ -585,35 +582,35 @@ namespace GBBG
 					labels = new List<GUIContent>{
 						new GUIContent("Bottom")
 					};
-					succesors = EditorUtilities.DrawObjectList(succesors, "Successors", ref inspectorFoldoutTracker1, labels, true);
+					succesors = EditorUtilities.DrawLabeledSuccessorList(succesors, "Successors", ref inspectorFoldoutTracker1, labels);
 					rule.succesor[2] = succesors[0];
 					break;
 				case RuleComponent.SplitMode.SidesPlusBottom:
-					succesors.Resize(2, null);
+					succesors.Resize(2);
 					succesors[0] = rule.succesor[0];
 					succesors[1] = rule.succesor[2];
 					labels = new List<GUIContent>{
 						new GUIContent("Sides"),
 						new GUIContent("Bottom")
 					};
-					succesors = EditorUtilities.DrawObjectList(succesors, "Successors", ref inspectorFoldoutTracker1, labels, true);
+					succesors = EditorUtilities.DrawLabeledSuccessorList(succesors, "Successors", ref inspectorFoldoutTracker1, labels);
 					rule.succesor[0] = succesors[0];
 					rule.succesor[2] = succesors[1];
 					break;
 				case RuleComponent.SplitMode.TopPlusBottom:
-					succesors.Resize(2, null);
+					succesors.Resize(2);
 					succesors[0] = rule.succesor[1];
 					succesors[1] = rule.succesor[2];
 					labels = new List<GUIContent>{
 						new GUIContent("Top"),
 						new GUIContent("Bottom")
 					};
-					succesors = EditorUtilities.DrawObjectList(succesors, "Successors", ref inspectorFoldoutTracker1, labels, true);
+					succesors = EditorUtilities.DrawLabeledSuccessorList(succesors, "Successors", ref inspectorFoldoutTracker1, labels);
 					rule.succesor[1] = succesors[0];
 					rule.succesor[2] = succesors[1];
 					break;
 				default:
-					succesors.Resize(3, null);
+					succesors.Resize(3);
 					succesors[0] = rule.succesor[0];
 					succesors[1] = rule.succesor[1];
 					succesors[2] = rule.succesor[2];
@@ -622,7 +619,7 @@ namespace GBBG
 						new GUIContent("Top"),
 						new GUIContent("Bottom")
 					};
-					succesors = EditorUtilities.DrawObjectList(succesors, "Successors", ref inspectorFoldoutTracker1, labels, true);
+					succesors = EditorUtilities.DrawLabeledSuccessorList(succesors, "Successors", ref inspectorFoldoutTracker1, labels);
 					rule.succesor[0] = succesors[0];
 					rule.succesor[1] = succesors[1];
 					rule.succesor[2] = succesors[2];
@@ -652,7 +649,9 @@ namespace GBBG
 			rule.axis = (Axis)EditorGUILayout.EnumPopup(new GUIContent("Axis", "The axis parallel to the division planes."), rule.axis);
 
 			//successor
-			rule.succesor[0] = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Successor"), rule.succesor[0], typeof(GameObject), false);
+			EditorGUILayout.LabelField("Successor");
+			rule.succesor[0] = EditorUtilities.DrawSuccessorField(rule.succesor[0]);
+			//rule.succesor[0] = (Successor)EditorGUILayout.ObjectField(new GUIContent("Successor"), rule.succesor[0], typeof(Successor), false);
 
 		}
 
@@ -680,8 +679,8 @@ namespace GBBG
 			rule.cuttingType = (RuleSplit.CuttingType)EditorGUILayout.EnumPopup(new GUIContent("Cut direction"), rule.cuttingType);
 
 			//successors
-			rule.succesor = EditorUtilities.DrawObjectList<GameObject>(rule.succesor, new GUIContent("Successors"), ref inspectorFoldoutTracker1);
-
+			rule.succesor = EditorUtilities.DrawSuccessorList(rule.succesor, new GUIContent("Successor"), ref inspectorFoldoutTracker1);
+			
 			//splitpoints
 			int splitPointsCount = Mathf.Max(0, rule.succesor.Count - 1);
 			rule.splitPoints.Resize(splitPointsCount);
@@ -707,7 +706,9 @@ namespace GBBG
 				EditorGUILayout.HelpBox("Predecessor not found in this grammar.", MessageType.Warning);
 
 			//succesor
-			rule.succesor[0] = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Successor"), rule.succesor[0], typeof(GameObject), false);
+			EditorGUILayout.LabelField("Successor");
+			rule.succesor[0] = EditorUtilities.DrawSuccessorField(rule.succesor[0]);
+			//rule.succesor[0] = (Successor)EditorGUILayout.ObjectField(new GUIContent("Successor"), rule.succesor[0], typeof(Successor), false);
 
 			//translation
 			rule.applyTranslation = EditorGUILayout.BeginToggleGroup(new GUIContent("Translation"), rule.applyTranslation);
@@ -764,7 +765,9 @@ namespace GBBG
 			rule.axis = (Axis)EditorGUILayout.EnumPopup(new GUIContent("Axis", "The axis perpendicular to the division planes. Ignored if predecessor is 2D."), rule.axis);
 
 			//successor
-			rule.succesor[0] = (GameObject)EditorGUILayout.ObjectField(new GUIContent("Successor"), rule.succesor[0], typeof(GameObject), false);
+			EditorGUILayout.LabelField("Successor");
+			rule.succesor[0] = EditorUtilities.DrawSuccessorField(rule.succesor[0]);
+			//rule.succesor[0] = (Successor)EditorGUILayout.ObjectField(new GUIContent("Successor"), rule.succesor[0], typeof(Successor), false);
 		}
 
 		#endregion
@@ -794,7 +797,12 @@ namespace GBBG
 			int selectionGridColumns = (int)position.width / 2 / 120;
 			int selectionGridHeight = Mathf.CeilToInt(ruleNames.Count / (float)selectionGridColumns);
 			ruleSelectorScroll = GUILayout.BeginScrollView(ruleSelectorScroll, false, true);
+			int index = selectedRuleIndex;
 			selectedRuleIndex = GUILayout.SelectionGrid(selectedRuleIndex, ruleNames.ToArray(), selectionGridColumns, GUILayout.Height(selectionGridHeight * 50), GUILayout.Width(position.width / 2 - 28));
+			if(index != selectedRuleIndex)
+			{
+				AssetDatabase.SaveAssetIfDirty(grammar.rules[selectedRuleIndex]);
+			}
 			GUILayout.EndScrollView();
 		}
 

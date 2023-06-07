@@ -15,7 +15,7 @@ namespace GBBG
 
 		public override List<Shape> ApplyRule(Shape shape)
 		{
-			Shape newShape = CreateNewShape3(succesor[0], shape);
+			Shape newShape = CreateNewShape3(succesor[0].Get(), shape);
 			if (flip)
 			{
 				Axis currentTopAxis = GetTopAxis(newShape);
@@ -24,9 +24,9 @@ namespace GBBG
 
 
 			newShape.Scale = new Vector3(
-				preferedSize.x == 1 ? succesor[0].GetComponent<Shape>().PreferedSize.x : shape.Scale.x,
-				preferedSize.y == 1 ? succesor[0].GetComponent<Shape>().PreferedSize.y : shape.Scale.y,
-				preferedSize.z == 1 ? succesor[0].GetComponent<Shape>().PreferedSize.z : shape.Scale.z);
+				preferedSize.x == 1 ? succesor[0].Get().GetComponent<Shape>().PreferedSize.x : shape.Scale.x,
+				preferedSize.y == 1 ? succesor[0].Get().GetComponent<Shape>().PreferedSize.y : shape.Scale.y,
+				preferedSize.z == 1 ? succesor[0].Get().GetComponent<Shape>().PreferedSize.z : shape.Scale.z);
 			return new List<Shape> { newShape };
 		}
 
