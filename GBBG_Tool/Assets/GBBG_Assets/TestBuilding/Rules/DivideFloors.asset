@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62db8f06edb76534fb6bf6d8ee8cc681, type: 3}
   m_Name: DivideFloors
   m_EditorClassIdentifier: 
-  predescesor: FLOORS
+  predescesor: FLOORSs
   succesor:
   - possibleSuccessors:
     - chance: 1
       successor: {fileID: 3142074239872119730, guid: dc4527e51b41d364cae6f3066f45f75c, type: 3}
+    - chance: 0.2
+      successor: {fileID: 3142074239872119730, guid: 60377f2e7d3149641a6aa34fa5d64c51, type: 3}
   axis: 1

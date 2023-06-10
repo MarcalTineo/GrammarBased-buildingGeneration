@@ -12,15 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8755a17022a4c44b8734a1d069c5ee2, type: 3}
   m_Name: New Split Rule
   m_EditorClassIdentifier: 
-  predescesor: 
+  predescesor: START
   succesor:
   - possibleSuccessors:
     - chance: 1
-      successor: {fileID: 0}
+      successor: {fileID: 3142074239872119730, guid: 2d6922ce22f99564d8dedca13aa2039a, type: 3}
   - possibleSuccessors:
     - chance: 1
-      successor: {fileID: 0}
+      successor: {fileID: 3142074239872119730, guid: a6a6131bbc45c3443be140a223ef1070, type: 3}
+  - possibleSuccessors:
+    - chance: 1
+      successor: {fileID: 3142074239872119730, guid: a6a6131bbc45c3443be140a223ef1070, type: 3}
+  - possibleSuccessors:
+    - chance: 1
+      successor: {fileID: 3142074239872119730, guid: a6a6131bbc45c3443be140a223ef1070, type: 3}
   axis: 0
   cuttingType: 0
   splitPoints:
-  - 0
+  - 0.5
+  - 1
+  - 0.5

@@ -43,13 +43,12 @@ namespace GBBG
 			SetHierarchy();
 
 			//derivation
+			int axiomCount = derivation.Count;
+			for (int i = 0; i < axiomCount; i++)
+			{
+				Derivate(derivation[i]);
+			}
 
-			Debugger.Log(0);
-			Derivate(derivation[0]);
-			//foreach (Shape shape in derivation)
-			//{
-			//}
-			Debugger.Log(1);
 			if (doPostProduction)
 			{
 				PostProduce(derivation);
@@ -77,7 +76,6 @@ namespace GBBG
 
 		private void Derivate(Shape shape)
 		{
-			Debugger.Log(2);
 			if (shape.IsTerminal)
 			{
 				return;
@@ -93,11 +91,9 @@ namespace GBBG
 				return;
 			}
 
-			Debugger.Log(3);
 			//select rule -- Need to chenge heuristics
 			selectedRule = selectRuleDelegate(validRules);
-
-			Debugger.Log(4);
+			
 			//apply rule
 			List<Shape> newShapes = selectedRule.ApplyRule(shape);
 
@@ -105,7 +101,7 @@ namespace GBBG
 			derivation.Remove(shape);
 			shape.Deactivate();
 
-			//derivate ner shapes
+			//derivate new shapes
 			if (newShapes.Count > 0)
 			{
 				foreach (Shape newShape in newShapes)
