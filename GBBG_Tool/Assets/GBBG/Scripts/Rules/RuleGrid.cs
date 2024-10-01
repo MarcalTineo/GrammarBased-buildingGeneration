@@ -1,0 +1,123 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace GBBG
+{
+	[CreateAssetMenu(fileName = "New Grid Rule", menuName = "GBBG/Rules/Grid")]
+	public class RuleGrid : Rule
+	{
+		public Axis axis;
+		public override List<Shape> ApplyRule(Shape shape)
+		{
+			List<Shape> result = new List<Shape>();
+			Vector2Int tiles;
+			Vector2 tileSize;
+
+			//2d shapes
+			if(shape.Dimensions == 2)
+			{
+				tiles = GetTiles(shape, Axis.X);
+				tileSize = new Vector2(shape.Scale.x / tiles.x, shape.Scale.y / tiles.y);
+				for (int i = 0; i < tiles.x; i++)
+				{
+					for (int j = 0; j < tiles.y; j++)
+					{
+						Shape newShape = CreateNewShape3(succesor[0].Get(), shape);
+						newShape.Position += shape.transform.right * tileSize.x * i;
+						newShape.Position += shape.transform.up * tileSize.y * j;
+
+						newShape.Scale = new Vector3(tileSize.x, tileSize.y, shape.Scale.z);
+						result.Add(newShape);
+
+					}
+				}
+			}
+
+			//3d shapes
+			switch (axis)
+			{
+				case Axis.Z:
+					tiles = GetTiles(shape, Axis.X);
+					tileSize = new Vector2(shape.Scale.x / tiles.x, shape.Scale.y / tiles.y);
+					for (int i = 0; i < tiles.x; i++)
+					{
+						for (int j = 0; j < tiles.y; j++)
+						{
+							Shape newShape = CreateNewShape3(succesor[0].Get(), shape);
+							newShape.Position += shape.transform.right * tileSize.x * i;
+							newShape.Position += shape.transform.up * tileSize.y * j;
+							
+							newShape.Scale = new Vector3(tileSize.x, tileSize.y, shape.Scale.z);
+							result.Add(newShape);
+
+						}
+					}
+					break;
+				case Axis.Y:
+					tiles = GetTiles(shape, Axis.Y);
+					tileSize = new Vector2(shape.Scale.x / tiles.x, shape.Scale.z / tiles.y);
+					for (int i = 0; i < tiles.x; i++)
+					{
+						for (int j = 0; j < tiles.y; j++)
+						{
+							Shape newShape = CreateNewShape3(succesor[0].Get(), shape);
+							newShape.Position += shape.transform.right * tileSize.x * i;
+							newShape.Position += shape.transform.forward * tileSize.y * j;
+
+							newShape.Scale = new Vector3(tileSize.x, shape.Scale.y, tileSize.y);
+							result.Add(newShape);
+						}
+					}
+					break;
+				case Axis.X:
+					tiles = GetTiles(shape, Axis.Z);
+					tileSize = new Vector2(shape.Scale.z / tiles.x, shape.Scale.y / tiles.y);
+					for (int i = 0; i < tiles.x; i++)
+					{
+						for (int j = 0; j < tiles.y; j++)
+						{
+							Shape newShape = CreateNewShape3(succesor[0].Get(), shape);
+							newShape.Position += shape.transform.forward * tileSize.x * i;
+							newShape.Position += shape.transform.up * tileSize.y * j;
+
+							newShape.Scale = new Vector3(shape.Scale.x, tileSize.y, tileSize.x);
+							result.Add(newShape);
+						}
+					}
+					break;
+				default:
+					break;
+			}
+			return result;
+		}
+
+		Vector2Int GetTiles(Shape shape, Axis plane)
+		{
+			Vector2Int tiles = Vector2Int.zero;
+			int tilesX = 0;
+			int tilesY = 0;
+			switch (plane)
+			{
+				case Axis.X:
+					tilesX = succesor[0].Get().GetComponent<Shape>().PreferedSize.x == 0 ? 1 : Mathf.RoundToInt(shape.Scale.x / succesor[0].Get().GetComponent<Shape>().PreferedSize.x);
+					tilesY = succesor[0].Get().GetComponent<Shape>().PreferedSize.y == 0 ? 1 : Mathf.RoundToInt(shape.Scale.y / succesor[0].Get().GetComponent<Shape>().PreferedSize.y);
+					tiles = new Vector2Int(tilesX, tilesY);
+					break;
+				case Axis.Y:
+					tilesX = succesor[0].Get().GetComponent<Shape>().PreferedSize.x == 0 ? 1 : Mathf.RoundToInt(shape.Scale.x / succesor[0].Get().GetComponent<Shape>().PreferedSize.x);
+					tilesY = succesor[0].Get().GetComponent<Shape>().PreferedSize.y == 0 ? 1 : Mathf.RoundToInt(shape.Scale.z / succesor[0].Get().GetComponent<Shape>().PreferedSize.z);
+					tiles = new Vector2Int(tilesX, tilesY);
+					break;
+				case Axis.Z:
+					tilesX = succesor[0].Get().GetComponent<Shape>().PreferedSize.x == 0 ? 1 : Mathf.RoundToInt(shape.Scale.z / succesor[0].Get().GetComponent<Shape>().PreferedSize.z);
+					tilesY = succesor[0].Get().GetComponent<Shape>().PreferedSize.y == 0 ? 1 : Mathf.RoundToInt(shape.Scale.y / succesor[0].Get().GetComponent<Shape>().PreferedSize.y);
+					tiles = new Vector2Int(tilesX, tilesY);
+					break;
+				default:
+					break;
+			}
+			return tiles;
+		}
+	}
+}
